@@ -25,32 +25,33 @@ class CreateCooperativasTable extends Migration
             $table->date('fecha_formacion');
             $table->date('fecha_resolucion');
             $table->string('direccion');
-            $table->foreign('departamento_id')->references('id')->on('departamentos');
-            $table->foreign('provincia_id')->references('id')->on('provincias');
-            $table->foreign('municipio_id')->references('id')->on('municipios');
-            $table->foreign('localidad_id')->references('id')->on('localidades');
+            $table->integer('departamento_id')->unsigned();
+            $table->integer('provincia_id')->unsigned();
+            $table->integer('municipio_id')->unsigned();
+            $table->integer('localidad_id')->unsigned();
             $table->string('telefono');
             $table->string('fax');
             $table->string('casilla_postal');
             $table->string('email');
             $table->string('web');
-            $table->foreign('mineral_id')->references('id')->on('minerales');
+            $table->integer('mineral_id')->unsigned();
 
             $table->decimal('latitude',20,10);
             $table->decimal('longitude',20,10);
             $table->timestamps();
         });
 
+
         Schema::create('socios', function (Blueprint $table) {
             $table->increments('id');
-            $table->foreign('cooperativa_id')->references('id')->on('cooperativas');
+            $table->integer('cooperativa_id')->unsigned();
             $table->string('nombre_completo');
             $table->string('ci')->unique();
             $table->date('fecha_nacimiento');
             $table->date('fecha_sociedad');
             $table->string('domicilio');
-            $table->foreign('departamento_id')->references('id')->on('departamentos');
-            $table->foreign('provincia_id')->references('id')->on('provincias');
+            $table->integer('departamento_id')->unsigned();
+            $table->integer('provincia_id')->unsigned();
 
             $table->string('telefono');
             $table->string('email');
@@ -66,6 +67,31 @@ class CreateCooperativasTable extends Migration
 
             $table->timestamps();
         });
+
+        // add foreign keys
+        Schema::table('cooperativas', function($table) {
+        });
+
+        Schema::table('socios', function($table) {
+            $table->foreign('cooperativa_id')->references('id')->on('cooperativas');
+        });
+
+
+//        supervision de Cooperativas
+        Schema::create('supervision_cooperativas', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('cooperativa_id')->unsigned();
+//            $table->string('nombre');
+            $table->date('fecha');
+            $table->double('produccion');
+            $table->string('unidad_produccion');
+            $table->text('observaciones');
+
+            $table->timestamps();
+        });
+        Schema::table('supervision_cooperativas', function($table) {
+            $table->foreign('cooperativa_id')->references('id')->on('cooperativas');
+        });
     }
 
     /**
@@ -76,8 +102,10 @@ class CreateCooperativasTable extends Migration
     public function down()
     {
         //
-        Schema::drop('cooperativas');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::drop('socios');
-
+        Schema::drop('cooperativas');
+        Schema::drop('supervision_cooperativas');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
