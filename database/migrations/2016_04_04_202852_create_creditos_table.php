@@ -66,6 +66,24 @@ class CreateCreditosTable extends Migration
             $table->foreign('cooperativa_id')->references('id')->on('cooperativas');
         });
 
+        //        garantias
+        Schema::create('garantias_solicitudes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('solicitud_id')->unsigned();
+            $table->string('nombre');
+            $table->double('valor_sus');
+            $table->double('valor_bob');
+            $table->text('descripcion');
+            $table->text('adjunto');
+//            $table->json('requisitos');
+
+            $table->timestamps();
+        });
+
+        Schema::table('garantias_solicitudes', function($table) {
+            $table->foreign('solicitud_id')->references('id')->on('solicitudes');
+        });
+
 //        Aprobar solicitud
         Schema::create('solicitudes_resolucion', function (Blueprint $table) {
             $table->increments('id');
@@ -129,6 +147,81 @@ class CreateCreditosTable extends Migration
             $table->foreign('credito_id')->references('id')->on('creditos');
         });
 
+        // Amortizaciones
+        Schema::create('amortizaciones', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('credito_id')->unsigned();
+//            $table->boolean('estado'); // 0: nope, 1: sip
+            $table->date('fecha_pago');
+            $table->string('documento');
+
+            $table->double('importe');
+            $table->string('nombre_depositante');
+            $table->string('ci');
+            $table->string('adjunto');
+            $table->text('observacion');
+
+            $table->timestamps();
+        });
+        Schema::table('amortizaciones', function($table) {
+            $table->foreign('credito_id')->references('id')->on('creditos');
+        });
+
+        // Control credito???
+//        todo eto para?
+//        Schema::create('control_credito', function (Blueprint $table) {
+//            $table->increments('id');
+//            $table->integer('credito_id')->unsigned();
+////            $table->boolean('estado'); // 0: nope, 1: sip
+//            $table->date('fecha');
+//            $table->double('cuota_capital');
+//            $table->double('cuota_interes');
+//            $table->double('total_cuota');
+//            $table->double('saldo_capital');
+//
+//            $table->timestamps();
+//        });
+//        Schema::table('control_credito', function($table) {
+//            $table->foreign('credito_id')->references('id')->on('creditos');
+//        });
+
+        // Desembolso
+        Schema::create('desembolsos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('credito_id')->unsigned();
+            $table->boolean('estado'); // 0: nope, 1: sip
+            $table->date('fecha_pago');
+            $table->string('documento');
+
+            $table->double('importe');
+            $table->string('nombre_completo');
+            $table->string('ci');
+            $table->string('adjunto');
+            $table->text('observacion');
+
+            $table->timestamps();
+        });
+        Schema::table('desembolsos', function($table) {
+            $table->foreign('credito_id')->references('id')->on('creditos');
+        });
+
+        // Equipo y maquinaria
+//        todo verificar si va
+//        Schema::create('equipo_infraestructura', function (Blueprint $table) {
+//            $table->increments('id');
+//            $table->double('importe');
+//
+//            $table->string('adjunto');
+//            $table->text('descripcion');
+//            $table->text('descripcion_adicional');
+//            $table->text('descripcion_especifica');
+//
+//            $table->timestamps();
+//        });
+//        Schema::table('equipo_infraestructura', function($table) {
+//            $table->foreign('credito_id')->references('id')->on('creditos');
+//        });
+
     }
 
     /**
@@ -143,9 +236,15 @@ class CreateCreditosTable extends Migration
         Schema::drop('tipo_prestamo');
         Schema::drop('tipo_cliente');
         Schema::drop('solicitudes');
+        Schema::drop('garantias_solicitudes');
         Schema::drop('solicitudes_resolucion');
         Schema::drop('creditos');
         Schema::drop('plan_creditos');
+        Schema::drop('amortizaciones');
+//        Schema::drop('control_credito');
+        Schema::drop('desembolsos');
+//        Schema::drop('equipo_infraestructura');
+
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
