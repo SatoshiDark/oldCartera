@@ -29,7 +29,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="skin-blue sidebar-mini">
+<body class="skin-black sidebar-mini">
 <div class="wrapper">
 
     @include('layouts.partials.mainheader')
@@ -48,7 +48,7 @@ desired effect
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
 
-    @include('layouts.partials.controlsidebar')
+    {{--@include('layouts.partials.controlsidebar')--}}
 
     @include('layouts.partials.footer')
 
