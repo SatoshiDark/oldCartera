@@ -16,12 +16,12 @@
                 <div class="inner">
                   <h3>NX</h3>
 
-                  <p>Cooperativas y socios</p>
+                  <p>Cooperativas</p>
                 </div>
                 <div class="icon">
                   <i class="fa fa-group"></i>
                 </div>
-                <a href="#" class="small-box-footer">
+                <a href="{{url('cooperativas')}}" class="small-box-footer">
                   Ver Detalles <i class="fa fa-arrow-circle-right"></i>
                 </a>
               </div>

@@ -73,6 +73,14 @@
                     <input type="text" name="ci_representante_legal" id="coop-ci" class="form-control">
                 </div>
             </div>
+            <!-- Nombre RL -->
+            <div class="form-group">
+                <label for="nombre_representante_legal" class="col-sm-3 control-label">C.I. Representante Legal</label>
+
+                <div class="col-sm-6">
+                    <input type="text" name="nombre_representante_legal" id="coop-nombre_rl" class="form-control">
+                </div>
+            </div>
             <!-- Fecha de Formacion -->
             <div class="form-group">
                 <label for="fecha_formacion" class="col-sm-3 control-label">Fecha Formacion</label>

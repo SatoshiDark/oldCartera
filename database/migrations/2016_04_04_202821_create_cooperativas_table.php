@@ -21,6 +21,7 @@ class CreateCooperativasTable extends Migration
             $table->string('derecho_consesionario');
             $table->string('federacion_afiliada');
             $table->string('ci_representante_legal');
+            $table->string('nombre_representante_legal');
             $table->integer('cantidad_socios');
             $table->date('fecha_formacion');
             $table->date('fecha_resolucion');

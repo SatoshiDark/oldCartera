@@ -22,136 +22,78 @@
             <div class="box-body">
 <!-- New Task Form -->
         @include('layouts.partials.errors')
-        <form action="{{ url('cooperativas') }}" method="PATCH" class="form-horizontal">
-            {!! csrf_field() !!}
+        {!! Form::model($cooperativa, array('route' => array('cooperativas.update', $cooperativa->id), 'method' => 'put')) !!}
 
-            <!-- Nombre -->
-            <div class="form-group">
-                <label for="nombre" class="col-sm-3 control-label">Nombre</label>
 
-                <div class="col-sm-6">
-                    <input type="text" name="nombre" id="coop-nombre" class="form-control" value="{{ old('nombre') }}">
-                </div>
-            </div>
-            <!-- Codigo -->
-            <div class="form-group">
-                <label for="codigo" class="col-sm-3 control-label">Codigo</label>
+        <div class="form-group">
+            {!! Form::label('nombre', 'Nombre:', ['class' => 'control-label']) !!}
+            {!! Form::text('nombre', null, ['class' => 'form-control']) !!}
+        </div>
 
-                <div class="col-sm-6">
-                    <input type="text" name="codigo" id="codigo" class="form-control" value="{{ old('codigo') }}">
-                </div>
-            </div>
-            <!-- Nro de Registro -->
-            <div class="form-group">
-                <label for="nro_registro" class="col-sm-3 control-label">Nro. de Registro</label>
+        <div class="form-group">
+            {!! Form::label('codigo', 'Codigo:', ['class' => 'control-label']) !!}
+            {!! Form::text('codigo', null, ['class' => 'form-control']) !!}
+        </div>
 
-                <div class="col-sm-6">
-                    <input type="text" name="nro_registro" id="coop-registro" class="form-control">
-                </div>
-            </div>
-            <!-- Derecho consesionario -->
-            <div class="form-group">
-                <label for="derecho_consesionario" class="col-sm-3 control-label">Derecho Consesionario</label>
+        <div class="form-group">
+            {!! Form::label('nro_registro', 'Nro Registro:', ['class' => 'control-label']) !!}
+            {!! Form::text('nro_registro', null, ['class' => 'form-control']) !!}
+        </div>
 
-                <div class="col-sm-6">
-                    <input type="text" name="derecho_consesionario" id="coop-derecho_c" class="form-control">
-                </div>
-            </div>
-            <!-- Federacion -->
-            <div class="form-group">
-                <label for="federacion_afiliada" class="col-sm-3 control-label">Federacion Afiliada</label>
+        <div class="form-group">
+            {!! Form::label('derecho_consesionario', 'Derecho Consesionario:', ['class' => 'control-label']) !!}
+            {!! Form::text('derecho_consesionario', null, ['class' => 'form-control']) !!}
+        </div>
 
-                <div class="col-sm-6">
-                    <input type="text" name="federacion_afiliada" id="coop-federacion" class="form-control">
-                </div>
-            </div>
-            <!-- CI -->
-            <div class="form-group">
-                <label for="ci_representante_legal" class="col-sm-3 control-label">C.I. Representante Legal</label>
+        <div class="form-group">
+            {!! Form::label('federacion_afiliada', 'Federacion Afiliada:', ['class' => 'control-label']) !!}
+            {!! Form::text('federacion_afiliada', null, ['class' => 'form-control']) !!}
+        </div>
 
-                <div class="col-sm-6">
-                    <input type="text" name="ci_representante_legal" id="coop-ci" class="form-control">
-                </div>
-            </div>
-            <!-- Fecha de Formacion -->
-            <div class="form-group">
-                <label for="fecha_formacion" class="col-sm-3 control-label">Fecha Formacion</label>
+        <div class="form-group">
+            {!! Form::label('ci_representante_legal', 'C.I. Representante legal:', ['class' => 'control-label']) !!}
+            {!! Form::text('ci_representante_legal', null, ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('nombre_representante_legal', 'Nombre Representante legal:', ['class' => 'control-label']) !!}
+            {!! Form::text('nombre_representante_legal', null, ['class' => 'form-control']) !!}
+        </div>
 
-                <div class="col-sm-6">
-                    <input type="date" name="fecha_formacion" id="coop-fecha_forma" class="form-control">
-                </div>
-            </div>
-            <!-- Fecha Resolucion -->
-            <div class="form-group">
-                <label for="fecha_resolucion" class="col-sm-3 control-label">Fecha Resolucion</label>
+        <div class="form-group">
+            {!! Form::label('fecha_formacion', 'Fecha Formacion:', ['class' => 'control-label']) !!}
+            {!! Form::input('date', 'fecha_formacion', date('d-m-Y'), ['class' => 'form-control']) !!}
+        </div>
 
-                <div class="col-sm-6">
-                    <input type="date" name="fecha_resolucion" id="coop-fecha_resol" class="form-control">
-                </div>
-            </div>
-            <!-- Direccion -->
-            <div class="form-group">
-                <label for="direccion" class="col-sm-3 control-label">Direccion</label>
+        <div class="form-group">
+            {!! Form::label('fecha_resolucion', 'Fecha Resolucion:', ['class' => 'control-label']) !!}
+            {!! Form::input('date', 'fecha_resolucion', date('d-m-Y'), ['class' => 'form-control']) !!}
+        </div>
 
-                <div class="col-sm-6">
-                    <input type="text" name="direccion" id="coop-direccion" class="form-control">
-                </div>
-            </div>
-            <!-- Telefono -->
-            <div class="form-group">
-                <label for="telefono" class="col-sm-3 control-label">Telefono</label>
+        <div class="form-group">
+            {!! Form::label('direccion', 'Direccion:', ['class' => 'control-label']) !!}
+            {!! Form::text('direccion', null, ['class' => 'form-control']) !!}
+        </div>
 
-                <div class="col-sm-6">
-                    <input type="text" name="telefono" id="coop-telefono" class="form-control">
-                </div>
-            </div>
-            <!-- Fax -->
-            <div class="form-group">
-                <label for="fax" class="col-sm-3 control-label">Fax</label>
+        <div class="form-group">
+            {!! Form::label('telefono', 'Telefono:', ['class' => 'control-label']) !!}
+            {!! Form::text('telefono', null, ['class' => 'form-control']) !!}
+        </div>
 
-                <div class="col-sm-6">
-                    <input type="text" name="fax" id="coop-fax" class="form-control">
-                </div>
-            </div>
+        <div class="form-group">
+            {!! Form::label('fax', 'Fax:', ['class' => 'control-label']) !!}
+            {!! Form::text('fax', null, ['class' => 'form-control']) !!}
+        </div>
 
-            <!-- eMail -->
-            <div class="form-group">
-                <label for="email" class="col-sm-3 control-label">Email</label>
-
-                <div class="col-sm-6">
-                    <input type="email" name="email" id="coop-email" class="form-control">
-                </div>
-            </div>
-
-            <!-- Website -->
-            <div class="form-group">
-                <label for="web" class="col-sm-3 control-label">Website</label>
-
-                <div class="col-sm-6">
-                    <input type="text" name="web" id="coop-web" class="form-control">
-                </div>
-            </div>
-
-            {{--<!-- Nombre -->--}}
-            {{--<div class="form-group">--}}
-                {{--<label for="nombre" class="col-sm-3 control-label">Nombre</label>--}}
-
-                {{--<div class="col-sm-6">--}}
-                    {{--<input type="text" name="nombre" id="coop-nombre" class="form-control">--}}
-                {{--</div>--}}
-            {{--</div>--}}
+        <div class="form-group">
+            {!! Form::label('web', 'Website:', ['class' => 'control-label']) !!}
+            {!! Form::text('web', null, ['class' => 'form-control']) !!}
+        </div>
 
 
 
-            <!-- Add Button -->
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-6">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-plus"></i> Añadir nuevo
-                    </button>
-                </div>
-            </div>
-        </form>
+        {!! Form::submit('Actualizar registro', ['class' => 'btn btn-primary']) !!}
+
+        {!! Form::close() !!}
 
             </div><!-- /.box-body -->
           </div><!-- /.box -->

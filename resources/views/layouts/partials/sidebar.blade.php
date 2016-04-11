@@ -42,14 +42,14 @@
                 <a href="#"><i class='fa fa-users'></i> <span>Cooperativas</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="{{ url('cooperativas') }}">Cooperativas</a></li>
-                    <li><a href="#">Socios</a></li>
-                    <li><a href="#">Supervision de Cooperativas</a></li>
+                    {{--<li><a href="#">Socios</a></li>--}}
+                    {{--<li><a href="#">Supervision de Cooperativas</a></li>--}}
                 </ul>
             </li>
             <li class="treeview">
                 <a href="#"><i class='fa fa-edit'></i> <span>Solicitud de Prestamos</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Todas las solicitudes</a></li>
+                    <li><a href="{{ url('solicitudes') }}">Todas las solicitudes</a></li>
                     <li><a href="#">Solicitudes Aprobadas</a></li>
                     <li><a href="#">Solicitudes Pendientes</a></li>
                     <li><a href="#">Garantias de las Solicitudes</a></li>

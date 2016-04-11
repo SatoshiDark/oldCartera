@@ -31,20 +31,21 @@
                 <th>Codigo</th>
                 <th>Nro. Registro</th>
                 <th>CI representante</th>
-                <th>Nro. Socios</th>
+                <th>Representante</th>
                 <th>Fecha Formacion</th>
             </tr>
         </thead>
-        <tfoot>
-            <tr>
-                            <th>Acciones</th>
-                            <th>Codigo</th>
-                            <th>Nro. Registro</th>
-                            <th>CI representante</th>
-                            <th>Nro. Socios</th>
-                            <th>Fecha Formacion</th>
-                        </tr>
-        </tfoot>
+        {{--<tfoot>--}}
+            {{--<tr>--}}
+                            {{--<th>Acciones</th>--}}
+                            {{--<th>Nombre</th>--}}
+                            {{--<th>Codigo</th>--}}
+                            {{--<th>Nro. Registro</th>--}}
+                            {{--<th>CI representante</th>--}}
+                            {{--<th>Nro. Socios</th>--}}
+                            {{--<th>Fecha Formacion</th>--}}
+                        {{--</tr>--}}
+        {{--</tfoot>--}}
         <tbody>
         @foreach ($cooperativas as $cooperativa)
             <tr>
@@ -68,7 +69,7 @@
                 <td>{{ $cooperativa->codigo }}</td>
                 <td>{{ $cooperativa->nro_registro }}</td>
                 <td>{{ $cooperativa->ci_representante_legal }}</td>
-                <td>{{ $cooperativa->cantidad_socios }}</td>
+                <td>{{ $cooperativa->nombre_representante_legal }}</td>
                 <td>{{ $cooperativa->fecha_formacion }}</td>
             </tr>
         @endforeach
