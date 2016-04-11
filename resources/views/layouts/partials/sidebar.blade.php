@@ -34,20 +34,14 @@
             <li class="header">Menu</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="{{ url('home') }}"><i class='fa fa-dashboard'></i> <span>Home</span></a></li>
-            <li class="treeview">
-                            <a href="#"><i class='fa fa-book'></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
-                            <ul class="treeview-menu">
-                                <li><a href="#">Graficas de Desempeño</a></li>
-                                <li><a href="#">Reportes Detallados</a></li>
-                            </ul>
-                        </li>
+
             {{--<li><a href="#"><i class='fa fa-link'></i> <span>Estado Actual</span></a></li>--}}
             {{--<li><a href="#"><i class='fa fa-link'></i> <span>Graficas</span></a></li>--}}
             {{--<li><a href="#"><i class='fa fa-link'></i> <span>Reportes</span></a></li>--}}
             <li class="treeview">
                 <a href="#"><i class='fa fa-users'></i> <span>Cooperativas</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Cooperativas</a></li>
+                    <li><a href="{{ url('cooperativas') }}">Cooperativas</a></li>
                     <li><a href="#">Socios</a></li>
                     <li><a href="#">Supervision de Cooperativas</a></li>
                 </ul>
@@ -72,6 +66,13 @@
                 </ul>
             </li>
             <li class="treeview">
+                                        <a href="#"><i class='fa fa-book'></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
+                                        <ul class="treeview-menu">
+                                            <li><a href="#">Graficas de Desempeño</a></li>
+                                            <li><a href="#">Reportes Detallados</a></li>
+                                        </ul>
+                                    </li>
+            <li class="treeview">
                 <a href="#"><i class='fa fa-wrench'></i> <span>Configuracion general</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="#">Tipos de Creditos</a></li>
@@ -81,6 +82,7 @@
 
                 </ul>
             </li>
+
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
