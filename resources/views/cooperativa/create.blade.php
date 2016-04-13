@@ -75,7 +75,7 @@
             </div>
             <!-- Nombre RL -->
             <div class="form-group">
-                <label for="nombre_representante_legal" class="col-sm-3 control-label">C.I. Representante Legal</label>
+                <label for="nombre_representante_legal" class="col-sm-3 control-label">Nombre Representante Legal</label>
 
                 <div class="col-sm-6">
                     <input type="text" name="nombre_representante_legal" id="coop-nombre_rl" class="form-control">

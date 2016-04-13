@@ -95,7 +95,93 @@ class SolicitudController extends Controller
         $tipo_prestamo = TipoPrestamo::findOrFail($id);
         $cooperativa = Cooperativa::findOrFail($id);
         $solicitud = Solicitud::findOrFail($id);
-        return view('solicitud.show',['cooperativa' => $cooperativa, 'tipo_prestamo' => $tipo_prestamo])->withSolicitud($solicitud);
+
+        $plan=[];
+
+        $saldo_capital=$solicitud->importe_solicitado;
+        $capital_prestado=$saldo_capital;
+        $plazo=$tipo_prestamo->tiempo_maximo_pago;
+        $gracia=$tipo_prestamo->tiempo_de_gracia;
+
+        $interes_anual=$tipo_prestamo->interes;
+        $interes_mensual=$interes_anual/12/100;
+        $fecha_ini=$solicitud->fecha_solicitud;
+        $cuota_capital_mes=round($saldo_capital/($plazo-$gracia),2);
+
+        $plan['saldo_capital']=$saldo_capital;
+        $plan['plazo']=$plazo;
+        $plan['interes_anual']=$interes_anual;
+        $plan['interes_mensual']=$interes_mensual;
+
+        $contador_mes =0;
+//        echo "<table><tr><th>Fecha</th><th>PG</th><th>Cuota Mes</th><th>Cuota Interes</th><th>Cuota Total</th><th>Saldo a Capital</th></tr>";
+
+//        $id_credito=$values['id_credito'];
+
+        $date = date('d-m-Y', strtotime($fecha_ini));
+//$date = date('d-m-Y', strtotime("+0 months", strtotime($date)));
+        $es_gracia=1;
+        $detalle_plan=[];
+        while ($contador_mes < $plazo)
+        {
+            $detalle_plan[$contador_mes]['fecha']=$date;
+//            echo "<tr>";
+//            echo("<td>$date</td>");
+
+            $date=date('d-m-Y', strtotime($date. ' + 30 days'));
+
+            if($contador_mes<$gracia)
+            {
+                $detalle_plan[$contador_mes]['periodo_gracia']=0;
+                $detalle_plan[$contador_mes]['cuota_mes']=0;
+                $cuota_interes=round($saldo_capital*$interes_mensual,2);
+                $detalle_plan[$contador_mes]['cuota_interes']=$cuota_interes;
+                $cuota_total=0+$cuota_interes;
+                $detalle_plan[$contador_mes]['cuota_total']=$cuota_total;
+                $detalle_plan[$contador_mes]['saldo_capital']=$saldo_capital;
+//                echo("<td>$es_gracia</td>");
+//                echo("<td>cuota_mes= 0\t</td>");
+//                $cuota_interes=round($saldo_capital*$interes_mensual,2);
+//                echo("<td>cuota interes= $cuota_interes\t</td>");
+//                $cuota_total=0+$cuota_interes;
+//                echo("<td>cuota Total= $cuota_total\t</td>");
+//                echo("<td>nuevo saldo a capital= $saldo_capital\t</td>");
+            }
+            else
+            {
+                $detalle_plan[$contador_mes]['periodo_gracia']=1;
+                $detalle_plan[$contador_mes]['cuota_mes']=$cuota_capital_mes;
+                $cuota_interes=round($saldo_capital*$interes_mensual,2);
+                $detalle_plan[$contador_mes]['cuota_interes']=$cuota_interes;
+                $cuota_total=$cuota_capital_mes+$cuota_interes;
+                $detalle_plan[$contador_mes]['cuota_total']=$cuota_total;
+                $saldo_capital=$saldo_capital-$cuota_capital_mes;
+                $detalle_plan[$contador_mes]['saldo_capital']=$saldo_capital;
+//                $es_gracia=0;
+//                echo("<td>$es_gracia</td>");
+//                echo("<td>cuota_mes= $cuota_capital_mes\t</td>");
+//                $cuota_interes=round($saldo_capital*$interes_mensual,2);
+//                echo("<td>cuota interes= $cuota_interes\t</td>");
+//                $cuota_total=$cuota_capital_mes+$cuota_interes;
+//                echo("<td>cuota Total= $cuota_total\t</td>");
+//                $saldo_capital=$saldo_capital-$cuota_capital_mes;
+//                echo("<td>nuevo saldo a capital= $saldo_capital\t</td>");
+//
+//                echo "</tr>";
+            }
+            $contador_mes=$contador_mes + 1;
+//insertando en la base de datos
+//            $sql = "INSERT INTO plan_credito (id_credito,periodo_gracia,fecha_pago,cuota_capital,cuota_interes,total_cuota,saldo_capital) values
+//  ($id_credito,$es_gracia, $date, $cuota_capital_mes,$cuota_interes,$cuota_total,$saldo_capital)";
+//CustomQuery($sql);
+//            $contador_mes+=1;
+        }
+//        echo "</table>";
+        return view('solicitud.show',
+            ['cooperativa' => $cooperativa,
+                'tipo_prestamo' => $tipo_prestamo,
+                'plan' =>$plan,
+                'detalle_plan' => $detalle_plan])->withSolicitud($solicitud);
 //        return view('solicitud.show',['cooperativas' => $cooperativas, 'tipo_prestamos' => $tipo_prestamos])->withSolicitud($solicitud);
     }
 

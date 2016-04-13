@@ -59,7 +59,43 @@
                         <h4><b>Saldo Capital:</b> {{$solicitud->importe_solicitado}}</h4>
                         <h4><b>Capital prestado:</b> {{$solicitud->importe_solicitado}}</h4>
                         <h4><b>Plazo: </b>{{$tipo_prestamo->tiempo_maximo_pago}} Meses</h4>
+                        <h4><b>Tiempo de Gracia: </b>{{$tipo_prestamo->tiempo_de_gracia}} Meses</h4>
+                        <h4><b>Interes Anual: </b>{{$tipo_prestamo->interes}} %</h4>
+                        <h4><b>Interes Mensual: </b>{{$tipo_prestamo->interes}} %</h4>
+                        <h4>-------</h4>
 
+                        <table id="plancreditos" class="display" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Periodo Gracia</th>
+                                <th>Fecha de Pago</th>
+                                <th>Cuota Mes</th>
+                                <th>Cuota Interes</th>
+                                <th>Cuota Total</th>
+                                <th>Saldo Capital</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            @foreach ($detalle_plan as $detalle)
+                                <tr>
+{{--                                    <td>{{ $detalle['periodo_gracia'] == 0 ? 'Si':'No'}}</td>--}}
+                                    <td>@if ($detalle['periodo_gracia'] == 0)
+                                            <small class="label bg-green">Si</small>
+                                        @else
+                                            <small class="label bg-yellow">No</small>
+                                        @endif
+                                    </td>
+                                    <td>{{ $detalle['fecha'] }}</td>
+                                    <td>{{ $detalle['cuota_mes'] }}</td>
+                                    <td>{{ $detalle['cuota_interes'] }}</td>
+                                    <td>{{ $detalle['cuota_total'] }}</td>
+                                    <td>{{ $detalle['saldo_capital'] }}</td>
+
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
                     </div><!-- /.box-body -->
                   </div><!-- /.box -->
 
@@ -70,7 +106,9 @@
 @push('pagescripts')
 <script>
 $(document).ready(function() {
-    $('#plancreditos').DataTable();
+    $('#plancreditos').DataTable( {
+        "order": [[ 5, "desc" ]]
+    } );
 } );
 </script>
 @endpush
