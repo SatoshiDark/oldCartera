@@ -67,21 +67,6 @@ class CooperativaController extends Controller
         $input = $request->all();
         $cooperativa->fill($input);
         $cooperativa->save();
-//        $cooperativa->nombre = $request->nombre;
-//        $cooperativa->codigo = $request->codigo;
-//        $cooperativa->nro_registro = $request->nro_registro;
-//        $cooperativa->derecho_consesionario = $request->derecho_consesionario;
-//        $cooperativa->federacion_afiliada = $request->federacion_afiliada;
-//        $cooperativa->ci_representante_legal = $request->ci_representante_legal;
-//        $cooperativa->nombre_representante_legal = $request->nombre_representante_legal;
-//        $cooperativa->fecha_formacion = $request->fecha_formacion;
-//        $cooperativa->fecha_resolucion = $request->fecha_resolucion;
-//        $cooperativa->direccion = $request->direccion;
-//        $cooperativa->telefono = $request->telefono;
-//        $cooperativa->fax = $request->fax;
-//        $cooperativa->email = $request->email;
-//        $cooperativa->web = $request->web;
-//        $cooperativa->save();
 
         return redirect('/cooperativas');
     }

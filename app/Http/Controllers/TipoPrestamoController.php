@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Solicitud;
-use App\Cooperativa;
 use App\TipoPrestamo;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests;
 
-class SolicitudController extends Controller
+class TipoPrestamoController extends Controller
 {
     public function __construct()
     {
@@ -22,11 +22,10 @@ class SolicitudController extends Controller
      */
     public function index()
     {
-        //
-        $solicitudes = Solicitud::orderBy('created_at', 'asc')->get();
+        $tipo_prestamos = TipoPrestamo::orderBy('created_at', 'asc')->get();
 
-        return view('solicitud.list', [
-            'solicitudes' => $solicitudes
+        return view('tipoprestamo.list', [
+            'tipoprestamos' => $tipo_prestamos
         ]);
     }
 
@@ -38,10 +37,7 @@ class SolicitudController extends Controller
     public function create()
     {
         //
-        $cooperativas = Cooperativa::orderBy('created_at', 'asc')->get()->lists('nombre', 'id');
-        $tipo_prestamos = TipoPrestamo::orderBy('created_at', 'asc')->get()->lists('nombre', 'id');
-
-        return view('solicitud.create',['cooperativas' => $cooperativas, 'tipo_prestamos' => $tipo_prestamos]);
+        return view('tipoprestamo.create');
     }
 
     /**
@@ -54,8 +50,13 @@ class SolicitudController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'nro_solicitud' => 'required|max:255',
-//            'nro_registro' => 'unique:solicitudes|required',
+            'nombre' => 'required|max:255',
+            'minimo' => 'required',
+            'maximo' => 'required',
+            'tiempo_de_gracia' => 'required',
+            'tiempo_maximo_pago' => 'required',
+            'interes' => 'required',
+            'comisiones' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -64,11 +65,12 @@ class SolicitudController extends Controller
                 ->withErrors($validator);
         }
 
-        $cooperativa = new Solicitud();
+        $values = new TipoPrestamo();
         $input = $request->all();
-        $cooperativa->fill($input);
-        $cooperativa->save();
-        return redirect('/solicitudes');
+        $values->fill($input);
+        $values->save();
+
+        return redirect('/tipoprestamo');
     }
 
     /**
@@ -80,8 +82,8 @@ class SolicitudController extends Controller
     public function show($id)
     {
         //
-        $solicitud = Solicitud::findOrFail($id);
-        return view('solicitud.show')->withSolicitud($solicitud);
+        $value = TipoPrestamo::findOrFail($id);
+        return view('tipoprestamo.show')->withTipoprestamo($value);
     }
 
     /**
@@ -93,8 +95,8 @@ class SolicitudController extends Controller
     public function edit($id)
     {
         //
-        $solicitud = Solicitud::findOrFail($id);
-        return view('solicitud.edit')->withSolicitud($solicitud);
+        $value = TipoPrestamo::findOrFail($id);
+        return view('tipoprestamo.edit')->withTipoprestamo($value);
     }
 
     /**
@@ -107,9 +109,15 @@ class SolicitudController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $solicitud = Solicitud::findOrFail($id);
+        $value = TipoPrestamo::findOrFail($id);
         $validator = Validator::make($request->all(), [
-            'nro_solicitud' => 'required|max:255',
+            'nombre' => 'required|max:255',
+            'minimo' => 'required',
+            'maximo' => 'required',
+            'tiempo_de_gracia' => 'required',
+            'tiempo_maximo_pago' => 'required',
+            'interes' => 'required',
+            'comisiones' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -118,11 +126,11 @@ class SolicitudController extends Controller
                 ->withErrors($validator);
         }
         $input = $request->all();
-        $solicitud->fill($input);
-        $solicitud->save();
+        $value->fill($input);
+        $value->save();
 
 
-        return redirect('/solicitudes');
+        return redirect('/tipoprestamo');
     }
 
     /**

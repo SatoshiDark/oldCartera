@@ -28,11 +28,12 @@
             <!-- Nombre -->
                 <div class="form-group">
                     {!! Form::label('cooperativa_id', 'Cooperativa:', ['class' => 'control-label']) !!}
-                    {!! Form::select('cooperativa_id', $cooperativas)) !!}
+
+                    {!! Form::select('cooperativa_id', $cooperativas) !!}
                 </div>
                 <div class="form-group">
                     {!! Form::label('tipo_credito_id', 'Tipo Creditos:', ['class' => 'control-label']) !!}
-                    {!! Form::select('tipo_credito_id', $tipo_creditos)) !!}
+                    {!! Form::select('tipo_credito_id', $tipo_prestamos) !!}
                 </div>
                 <div class="form-group">
                     {!! Form::label('cooperativa_id', 'Nombre:', ['class' => 'control-label']) !!}
