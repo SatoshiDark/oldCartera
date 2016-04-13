@@ -8,6 +8,7 @@
 <script src="{{ asset('/js/bootstrap.min.js') }}" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('/js/app.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/plugins/chartjs/Chart.min.js') }}" type="text/javascript"></script>
 
 @stack('pagescripts')
 
