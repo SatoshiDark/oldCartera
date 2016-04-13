@@ -61,12 +61,12 @@
 
         <div class="form-group">
             {!! Form::label('fecha_formacion', 'Fecha Formacion:', ['class' => 'control-label']) !!}
-            {!! Form::input('date', 'fecha_formacion', date('d-m-Y'), ['class' => 'form-control']) !!}
+            {!! Form::input('date', 'fecha_formacion', \Carbon\Carbon::now(), ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('fecha_resolucion', 'Fecha Resolucion:', ['class' => 'control-label']) !!}
-            {!! Form::input('date', 'fecha_resolucion', date('d-m-Y'), ['class' => 'form-control']) !!}
+            {!! Form::input('date', 'fecha_resolucion', \Carbon\Carbon::now(), ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">

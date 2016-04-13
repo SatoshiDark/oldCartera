@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Solicitud;
 use App\Cooperativa;
 use App\TipoPrestamo;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -23,10 +26,14 @@ class SolicitudController extends Controller
     public function index()
     {
         //
+        $cooperativas = Cooperativa::orderBy('created_at', 'asc')->get()->lists('nombre', 'id');
+        $tipo_prestamos = TipoPrestamo::orderBy('created_at', 'asc')->get()->lists('nombre', 'id');
         $solicitudes = Solicitud::orderBy('created_at', 'asc')->get();
 
         return view('solicitud.list', [
-            'solicitudes' => $solicitudes
+            'solicitudes' => $solicitudes,
+            'tipo_prestamos' => $tipo_prestamos,
+            'cooperativas' => $cooperativas
         ]);
     }
 
@@ -64,10 +71,13 @@ class SolicitudController extends Controller
                 ->withErrors($validator);
         }
 
-        $cooperativa = new Solicitud();
+        $value = new Solicitud();
         $input = $request->all();
-        $cooperativa->fill($input);
-        $cooperativa->save();
+        $value->fill($input);
+        $value->estado = 0; //estado 0 = pendiente
+        $value->importe_total = $value->importe_propio + $value->importe_solicitado; //estado 0 = pendiente
+
+        $value->save();
         return redirect('/solicitudes');
     }
 
@@ -80,8 +90,13 @@ class SolicitudController extends Controller
     public function show($id)
     {
         //
+//        $cooperativas = Cooperativa::orderBy('created_at', 'asc')->get()->lists('nombre', 'id');
+//        $tipo_prestamos = TipoPrestamo::orderBy('created_at', 'asc')->get()->lists('nombre', 'id');
+        $tipo_prestamo = TipoPrestamo::findOrFail($id);
+        $cooperativa = Cooperativa::findOrFail($id);
         $solicitud = Solicitud::findOrFail($id);
-        return view('solicitud.show')->withSolicitud($solicitud);
+        return view('solicitud.show',['cooperativa' => $cooperativa, 'tipo_prestamo' => $tipo_prestamo])->withSolicitud($solicitud);
+//        return view('solicitud.show',['cooperativas' => $cooperativas, 'tipo_prestamos' => $tipo_prestamos])->withSolicitud($solicitud);
     }
 
     /**
@@ -94,7 +109,9 @@ class SolicitudController extends Controller
     {
         //
         $solicitud = Solicitud::findOrFail($id);
-        return view('solicitud.edit')->withSolicitud($solicitud);
+        $cooperativas = Cooperativa::orderBy('created_at', 'asc')->get()->lists('nombre', 'id');
+        $tipo_prestamos = TipoPrestamo::orderBy('created_at', 'asc')->get()->lists('nombre', 'id');
+        return view('solicitud.edit',['cooperativas' => $cooperativas, 'tipo_prestamos' => $tipo_prestamos])->withSolicitud($solicitud);
     }
 
     /**
@@ -119,6 +136,7 @@ class SolicitudController extends Controller
         }
         $input = $request->all();
         $solicitud->fill($input);
+        $solicitud->importe_total = $solicitud->importe_propio + $solicitud->importe_solicitado; //estado 0 = pendiente
         $solicitud->save();
 
 

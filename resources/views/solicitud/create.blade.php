@@ -36,9 +36,38 @@
                     {!! Form::select('tipo_credito_id', $tipo_prestamos) !!}
                 </div>
                 <div class="form-group">
-                    {!! Form::label('cooperativa_id', 'Nombre:', ['class' => 'control-label']) !!}
-                    {!! Form::text('cooperativa_id', null, ['class' => 'form-control']) !!}
+                    {!! Form::label('nro_solicitud', 'Nro. Solicitud:', ['class' => 'control-label']) !!}
+                    {!! Form::text('nro_solicitud', null, ['class' => 'form-control']) !!}
                 </div>
+                <div class="form-group">
+                    {!! Form::label('nombre_proyecto', 'Nombre del Proyecto:', ['class' => 'control-label']) !!}
+                    {!! Form::text('nombre_proyecto', null, ['class' => 'form-control']) !!}
+                </div>
+                <div class="form-group">
+                            {!! Form::label('fecha_solicitud', 'Fecha Solicitud:', ['class' => 'control-label']) !!}
+                            {!! Form::input('date', 'fecha_solicitud', date('d-m-Y'), ['class' => 'form-control']) !!}
+                        </div>
+                <div class="form-group">
+                    {!! Form::label('importe_solicitado', 'Importe Solicitado:', ['class' => 'control-label']) !!}
+                    {!! Form::text('importe_solicitado', null, ['class' => 'form-control']) !!}
+                </div>
+                <div class="form-group">
+                    {!! Form::label('importe_propio', 'Importe Propio:', ['class' => 'control-label']) !!}
+                    {!! Form::text('importe_propio', null, ['class' => 'form-control']) !!}
+                </div>
+                <div class="form-group">
+                    {!! Form::label('importe_total', 'Importe Total:', ['class' => 'control-label']) !!}
+                    {!! Form::text('importe_total', null, ['class' => 'form-control']) !!}
+                </div>
+                {{--<div class="form-group">--}}
+                    {{--{!! Form::label('adjunto', 'Archivo Adjunto:', ['class' => 'control-label']) !!}--}}
+                    {{--{!! Form::file('adjunto', null, ['class' => 'form-control']) !!}--}}
+                {{--</div>--}}
+                {{--<div class="form-group">--}}
+                    {{--{!! Form::label('requisitos', 'Requisitos:', ['class' => 'control-label']) !!}--}}
+                    {{--{!! Form::text('requisitos', null, ['class' => 'form-control']) !!}--}}
+                {{--</div>--}}
+
                 {{--array('cooperativa_id', 'tipo_credito_id', 'nro_solicitud', 'nombre_proyecto', 'fecha_solicitud',--}}
                 {{--'importe_solicitado','importe_propio', 'importe_total','estado');--}}
             <!-- Add Button -->

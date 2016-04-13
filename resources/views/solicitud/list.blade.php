@@ -47,13 +47,13 @@
                 </div>
 
                 </td>
-                <td>{{ $solicitud->cooperativa_id }}</td>
-                <td>{{ $solicitud->tipo_credito_id }}</td>
+                <td>{{ $cooperativas[$solicitud->cooperativa_id] }}</td>
+                <td>{{ $tipo_prestamos[$solicitud->tipo_credito_id] }}</td>
                 <td>{{ $solicitud->nro_solicitud }}</td>
                 <td>{{ $solicitud->nombre_proyecto }}</td>
                 <td>{{ $solicitud->fecha_solicitud }}</td>
                 <td>{{ $solicitud->importe_solicitado }}</td>
-                <td>{{ $solicitud->estado }}</td>
+                <td>{{ $solicitud->estado==0? "Pendiente":"Aprobado"  }}</td>
             </tr>
         @endforeach
         </tbody>

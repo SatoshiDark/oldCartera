@@ -22,79 +22,58 @@
             <div class="box-body">
 <!-- New Task Form -->
         @include('layouts.partials.errors')
-        {!! Form::model($cooperativa, array('route' => array('solicitudes.update', $cooperativa->id), 'method' => 'put')) !!}
+        {!! Form::model($solicitud, array('route' => array('solicitudes.update', $solicitud->id), 'method' => 'put')) !!}
 
 
-        <div class="form-group">
-            {!! Form::label('nombre', 'Nombre:', ['class' => 'control-label']) !!}
-            {!! Form::text('nombre', null, ['class' => 'form-control']) !!}
-        </div>
+        <!-- Nombre -->
+                        <div class="form-group">
+                            {!! Form::label('cooperativa_id', 'Cooperativa:', ['class' => 'control-label']) !!}
 
-        <div class="form-group">
-            {!! Form::label('codigo', 'Codigo:', ['class' => 'control-label']) !!}
-            {!! Form::select('Cooperativa', $cooperativas)) !!}
-            {{--{!! Form::text('codigo', null, ['class' => 'form-control']) !!}--}}
-        </div>
+                            {!! Form::select('cooperativa_id', $cooperativas) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('tipo_credito_id', 'Tipo Creditos:', ['class' => 'control-label']) !!}
+                            {!! Form::select('tipo_credito_id', $tipo_prestamos) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('nro_solicitud', 'Nro. Solicitud:', ['class' => 'control-label']) !!}
+                            {!! Form::text('nro_solicitud', null, ['class' => 'form-control']) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('nombre_proyecto', 'Nombre del Proyecto:', ['class' => 'control-label']) !!}
+                            {!! Form::text('nombre_proyecto', null, ['class' => 'form-control']) !!}
+                        </div>
+                        <div class="form-group">
+                                    {!! Form::label('fecha_solicitud', 'Fecha Solicitud:', ['class' => 'control-label']) !!}
+                                    {!! Form::input('date', 'fecha_solicitud', date('d-m-Y'), ['class' => 'form-control']) !!}
+                                </div>
+                        <div class="form-group">
+                            {!! Form::label('importe_solicitado', 'Importe Solicitado:', ['class' => 'control-label']) !!}
+                            {!! Form::text('importe_solicitado', null, ['class' => 'form-control']) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('importe_propio', 'Importe Propio:', ['class' => 'control-label']) !!}
+                            {!! Form::text('importe_propio', null, ['class' => 'form-control']) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('importe_total', 'Importe Total:', ['class' => 'control-label']) !!}
+                            {!! Form::text('importe_total', null, ['class' => 'form-control']) !!}
+                        </div>
+                        {{--<div class="form-group">--}}
+                            {{--{!! Form::label('adjunto', 'Archivo Adjunto:', ['class' => 'control-label']) !!}--}}
+                            {{--{!! Form::file('adjunto', null, ['class' => 'form-control']) !!}--}}
+                        {{--</div>--}}
+                        {{--<div class="form-group">--}}
+                            {{--{!! Form::label('requisitos', 'Requisitos:', ['class' => 'control-label']) !!}--}}
+                            {{--{!! Form::text('requisitos', null, ['class' => 'form-control']) !!}--}}
+                        {{--</div>--}}
 
-        <div class="form-group">
-            {!! Form::label('nro_registro', 'Nro Registro:', ['class' => 'control-label']) !!}
-            {!! Form::text('nro_registro', null, ['class' => 'form-control']) !!}
-        </div>
+                        {{--array('cooperativa_id', 'tipo_credito_id', 'nro_solicitud', 'nombre_proyecto', 'fecha_solicitud',--}}
+                        {{--'importe_solicitado','importe_propio', 'importe_total','estado');--}}
+                    <!-- Add Button -->
+                    {!! Form::submit('Actualizar registro', ['class' => 'btn btn-primary']) !!}
 
-        <div class="form-group">
-            {!! Form::label('derecho_consesionario', 'Derecho Consesionario:', ['class' => 'control-label']) !!}
-            {!! Form::text('derecho_consesionario', null, ['class' => 'form-control']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('federacion_afiliada', 'Federacion Afiliada:', ['class' => 'control-label']) !!}
-            {!! Form::text('federacion_afiliada', null, ['class' => 'form-control']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('ci_representante_legal', 'C.I. Representante legal:', ['class' => 'control-label']) !!}
-            {!! Form::text('ci_representante_legal', null, ['class' => 'form-control']) !!}
-        </div>
-        <div class="form-group">
-            {!! Form::label('nombre_representante_legal', 'Nombre Representante legal:', ['class' => 'control-label']) !!}
-            {!! Form::text('nombre_representante_legal', null, ['class' => 'form-control']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('fecha_formacion', 'Fecha Formacion:', ['class' => 'control-label']) !!}
-            {!! Form::input('date', 'fecha_formacion', date('d-m-Y'), ['class' => 'form-control']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('fecha_resolucion', 'Fecha Resolucion:', ['class' => 'control-label']) !!}
-            {!! Form::input('date', 'fecha_resolucion', date('d-m-Y'), ['class' => 'form-control']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('direccion', 'Direccion:', ['class' => 'control-label']) !!}
-            {!! Form::text('direccion', null, ['class' => 'form-control']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('telefono', 'Telefono:', ['class' => 'control-label']) !!}
-            {!! Form::text('telefono', null, ['class' => 'form-control']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('fax', 'Fax:', ['class' => 'control-label']) !!}
-            {!! Form::text('fax', null, ['class' => 'form-control']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('web', 'Website:', ['class' => 'control-label']) !!}
-            {!! Form::text('web', null, ['class' => 'form-control']) !!}
-        </div>
-
-
-
-        {!! Form::submit('Actualizar registro', ['class' => 'btn btn-primary']) !!}
-
-        {!! Form::close() !!}
+                {!! Form::close() !!}
 
             </div><!-- /.box-body -->
           </div><!-- /.box -->
