@@ -117,6 +117,44 @@
         </div><!-- /.box -->
 
     </div>
+    {{-- Mostrar si la solicitud no esta Aprobada --}}
+    @if ($solicitud['estado'] == 0)
+        <div class="col-xs-12">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><b>Aprobar solicitud</b></h3>
+                    <div class="box-tools pull-right">
+                        <a href="{{route('solicitudes.edit', $solicitud->id)}}" class="btn btn-sm btn-primary btn-flat pull-left"><i class='fa fa-edit'></i> </a>
+                        <a href="{{url('solicitudes')}}" class="btn btn-sm btn-info btn-flat pull-left"><i class='fa fa-th-large'></i> Lista</a>
+                    </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    {!! Form::open(array('url' => 'credito')) !!}
+                    <div class="form-group">
+                                        {!! Form::label('nro_solicitud', 'Nro. Solicitud:', ['class' => 'control-label']) !!}
+                                        {!! Form::text('nro_solicitud', $solicitud->nro_solicitud, ['class' => 'form-control', 'disabled']) !!}
+                                    </div>
+                                    <div class="form-group">
+                                                {!! Form::label('fecha_aprobacion', 'Fecha Aprobación:', ['class' => 'control-label']) !!}
+                                                {!! Form::input('date', 'fecha_aprobacion', date('d-m-Y'), ['class' => 'form-control']) !!}
+                                                </div>
+
+                                <!-- Add Button -->
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-6">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-plus"></i> Aprobar solicitud
+                                        </button>
+                                    </div>
+                                </div>
+
+                            {!! Form::close() !!}
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+        </div>
+        @endif
+
       </div>
 
 @endsection
@@ -333,85 +371,3 @@ $(document).ready(function() {
     });
 </script>
 @endpush
-{{--
-
-$saldo_capital=$values['saldo_capital'];
-$capital_prestado=$saldo_capital;
-$plazo=$values['plazo'];
-$gracia=$values['tiempo_gracia'];
-
-$interes_anual=$values['interes'];
-$interes_mensual=$interes_anual/12/100;
-$fecha_ini=$values['fecha_desembolso'];
-$cuota_capital_mes=round($values['saldo_capital']/($plazo-$gracia),2);
-echo("capital= $saldo_capital   ");
-echo("Plazo en meses= $plazo   ");
-echo("interes anual= $interes_anual   ");
-echo("interes mensual = $interes_mensual   ");
-$contador_mes=0;
-echo "<table><tr><th>Fecha</th><th>PG</th><th>Cuota Mes</th><th>Cuota Interes</th><th>Cuota Total</th><th>Saldo a Capital</th></tr>";
-
-$id_credito=$values['id_credito'];
-
-$date = $fecha_ini;
-//$date = date('d-m-Y', strtotime("+0 months", strtotime($date)));
-$es_gracia=1;
-while ($contador_mes < $plazo)
-{
-
-echo "<tr>";
-echo("<td>$date</td>");
-//$date = date('d-m-Y', strtotime("+1 months", strtotime($date)));
-//$date= date("d-m-Y", strtotime('+30 days'));
-$Date=date('d-m-Y', strtotime($Date. ' + 30 days'));
-//echo("<br>");
-
-//echo date_format($date);
-//$date = date_add($date,date_interval_create_from_date_string('30 days'));
-//$date = strtotime("+".$values['fecha_pago']." days", strtotime($date));
-
-if($contador_mes<$gracia)
-{
-
-echo("<td>$es_gracia</td>");
-echo("<td>cuota_mes= 0\t</td>");
-$cuota_interes=round($saldo_capital*$interes_mensual,2);
-echo("<td>cuota interes= $cuota_interes\t</td>");
-$cuota_total=0+$cuota_interes;
-echo("<td>cuota Total= $cuota_total\t</td>");
-echo("<td>nuevo saldo a capital= $saldo_capital\t</td>");
-}
-else
-{
-$es_gracia=0;
-echo("<td>$es_gracia</td>");
-echo("<td>cuota_mes= $cuota_capital_mes\t</td>");
-$cuota_interes=round($saldo_capital*$interes_mensual,2);
-echo("<td>cuota interes= $cuota_interes\t</td>");
-$cuota_total=$cuota_capital_mes+$cuota_interes;
-echo("<td>cuota Total= $cuota_total\t</td>");
-$saldo_capital=$saldo_capital-$cuota_capital_mes;
-echo("<td>nuevo saldo a capital= $saldo_capital\t</td>");
-
-echo "</tr>";
-}
-
-//insertando en la base de datos
-$sql = "INSERT INTO plan_credito (id_credito,periodo_gracia,fecha_pago,cuota_capital,cuota_interes,total_cuota,saldo_capital) values
-  ($id_credito,$es_gracia, $date, $cuota_capital_mes,$cuota_interes,$cuota_total,$saldo_capital)";
-//CustomQuery($sql);
-$contador_mes+=1;
-}
-echo "</table>";
-
-
-//header("Location: plan_credito_list.php?mastertable=credito&masterkey1=" .$values["id_credito"]);
-//exit();
-
-
-
-
-// Place event code here.
-// Use "Add Action" button to add code snippets.
-
-return true;--}}
