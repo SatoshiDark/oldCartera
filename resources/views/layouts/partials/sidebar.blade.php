@@ -58,7 +58,7 @@
             <li class="treeview">
                 <a href="#"><i class='fa fa-credit-card'></i> <span>Administracion de Creditos</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Todas los creditos</a></li>
+                    <li><a href="{{ url('credito') }}">Todos los creditos</a></li>
                     <li><a href="#">Aprobacion de creditos</a></li>
                     <li><a href="#">Plan de creditos</a></li>
                     <li><a href="#">Desembolsos</a></li>

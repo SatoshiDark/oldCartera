@@ -38,7 +38,7 @@
                         <div class="icon">
                           <i class="fa fa-envelope"></i>
                         </div>
-                        <a href="#" class="small-box-footer">
+                        <a href="{{url('solicitudes')}}" class="small-box-footer">
                           Ver Solicitudes <i class="fa fa-arrow-circle-right"></i>
                         </a>
                       </div>
@@ -54,7 +54,7 @@
                 <div class="icon">
                   <i class="fa fa-tasks"></i>
                 </div>
-                <a href="#" class="small-box-footer">
+                <a href="{{url('credito')}}" class="small-box-footer">
                   Ver creditos <i class="fa fa-arrow-circle-right"></i>
                 </a>
               </div>

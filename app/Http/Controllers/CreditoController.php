@@ -26,6 +26,15 @@ class CreditoController extends Controller
     public function index()
     {
         //
+        $cooperativas = Cooperativa::orderBy('created_at', 'asc')->get()->lists('nombre', 'id');
+//        $tipo_prestamos = TipoPrestamo::orderBy('created_at', 'asc')->get()->lists('nombre', 'id');
+        $creditos = Credito::orderBy('created_at', 'asc')->get();
+
+        return view('credito.list', [
+            'creditos' => $creditos,
+//            'tipo_prestamos' => $tipo_prestamos,
+            'cooperativas' => $cooperativas
+        ]);
     }
 
     /**
@@ -132,7 +141,8 @@ class CreditoController extends Controller
 //            return $plan_row;
         }
 
-        return "Solicitud Correctamente Aprobada";
+        return redirect("/credito/".$credito->id);
+//        return "Solicitud Correctamente Aprobada";
 //        $value = new Solicitud();
 //        $input = $request->all();
 //        $value->fill($input);
@@ -148,6 +158,50 @@ class CreditoController extends Controller
     public function show($id)
     {
         //
+        $credito = Credito::findOrFail($id);
+        $plan = Credito::find($id)->plan;
+        $desembolso = Credito::find($id)->desembolso;
+        $amortizacion = Credito::find($id)->amortizacion;
+        $cooperativa = Cooperativa::findOrFail($credito->cooperativa_id);
+        $solicitud = Solicitud::findOrFail($credito->solicitud_id);
+        $sum=array();
+//return $solicitud;
+//        Sum amortizaciones
+        $sumAmortizacion = 0;
+        if (!empty($amortizacion)) {
+            foreach ($amortizacion as $row) {
+                $sumAmortizacion = $sumAmortizacion + $row['importe'];
+            }
+        }
+        $sum['amortizacion'] = $sumAmortizacion;
+
+//        Sum desembolsos
+        $sumDesembolsos = 0;
+        if (!empty($desembolso)) {
+            foreach ($amortizacion as $row) {
+                $sumDesembolsos = $sumDesembolsos + $row['importe'];
+            }
+        }
+        $sum['desembolso'] = $sumDesembolsos;
+
+//        return $credito;
+//        return $plan;
+
+
+
+//        $saldo_capital=$solicitud->importe_solicitado;
+//        $plazo=$tipo_prestamo->tiempo_maximo_pago;
+//        $gracia=$tipo_prestamo->tiempo_de_gracia;
+//        $interes_anual=$tipo_prestamo->interes;
+//        $fecha_ini=$solicitud->fecha_solicitud;
+
+        return view('credito.show',
+            ['cooperativa' => $cooperativa,
+                'solicitud' => $solicitud,
+                'amortizacion' => $amortizacion,
+                'desembolso' => $desembolso,
+                'sum' => $sum,
+                'detalle_plan' => $plan])->withCredito($credito);
     }
 
     /**
