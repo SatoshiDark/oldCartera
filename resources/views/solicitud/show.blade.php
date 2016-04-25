@@ -13,8 +13,14 @@
         <div class="col-xs-12">
           <div class="box box-default">
             <div class="box-header with-border">
-              <h3 class="box-title"><b>Solicitud</b> {{$solicitud->nombre}}</h3>
+              <h3 class="box-title"><b>Solicitud: </b>{{$solicitud->nro_solicitud}} - {{$solicitud->nombre_proyecto}}    </h3>
+                    @if ($solicitud['estado'] == 0)
+                        <small class="label bg-yellow"><i class="fa fa-warning"></i> Solicitud Pendiente</small>
+                    @else
+                        <small class="label bg-green"><i class="fa fa-check"></i> Solicitud Aprobada</small>
+                    @endif
               <div class="box-tools pull-right">
+
                     <a href="{{route('solicitudes.edit', $solicitud->id)}}" class="btn btn-sm btn-primary btn-flat pull-left"><i class='fa fa-edit'></i> </a>
                     <a href="{{url('solicitudes')}}" class="btn btn-sm btn-info btn-flat pull-left"><i class='fa fa-th-large'></i> Lista</a>
                 </div>
@@ -129,15 +135,27 @@
                     </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
+                @include('layouts.partials.errors')
+                    <p>Los datos introducidos en esta solicitud se aprobaran, para realizar cambios edite la solicitud</p>
                     {!! Form::open(array('url' => 'credito')) !!}
+                    {!! Form::hidden('solicitud_id', $solicitud->id) !!}
                     <div class="form-group">
                                         {!! Form::label('nro_solicitud', 'Nro. Solicitud:', ['class' => 'control-label']) !!}
                                         {!! Form::text('nro_solicitud', $solicitud->nro_solicitud, ['class' => 'form-control', 'disabled']) !!}
                                     </div>
                                     <div class="form-group">
-                                                {!! Form::label('fecha_aprobacion', 'Fecha Aprobación:', ['class' => 'control-label']) !!}
-                                                {!! Form::input('date', 'fecha_aprobacion', date('d-m-Y'), ['class' => 'form-control']) !!}
-                                                </div>
+                                        {!! Form::label('codigo_prestamo', 'Codigo Credito:', ['class' => 'control-label']) !!}
+                                        {!! Form::text('codigo_prestamo', $solicitud->nro_solicitud, ['class' => 'form-control']) !!}
+                                    </div>
+                                    <div class="form-group">
+                                        {!! Form::label('fecha_aprobacion', 'Fecha Aprobación:', ['class' => 'control-label']) !!}
+                                        {!! Form::input('date', 'fecha_aprobacion', date('d-m-Y'), ['class' => 'form-control']) !!}
+                                    </div>
+                                    <div class="form-group">
+                                        {!! Form::label('fecha_desembolso', 'Fecha Primer Desembolso:', ['class' => 'control-label']) !!}
+                                        <p>La fecha del primer desembolso indica desde donde empezara a generarse el plan de pagos</p>
+                                        {!! Form::input('date', 'fecha_desembolso', date('d-m-Y'), ['class' => 'form-control']) !!}
+                                    </div>
 
                                 <!-- Add Button -->
                                 <div class="form-group">

@@ -90,9 +90,10 @@ class SolicitudController extends Controller
      */
     public function show($id)
     {
-        $tipo_prestamo = TipoPrestamo::findOrFail($id);
-        $cooperativa = Cooperativa::findOrFail($id);
+
         $solicitud = Solicitud::findOrFail($id);
+        $tipo_prestamo = TipoPrestamo::findOrFail($solicitud->tipo_credito_id);
+        $cooperativa = Cooperativa::findOrFail($solicitud->cooperativa_id);
 
         $saldo_capital=$solicitud->importe_solicitado;
         $plazo=$tipo_prestamo->tiempo_maximo_pago;

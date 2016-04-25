@@ -51,7 +51,7 @@ class CreateCreditosTable extends Migration
             $table->double('importe_propio');
             $table->double('importe_total');
             $table->integer('socio_id')->unsigned();
-//            UPDATE version 2: estado de solicitud, 0:pendiente, 1:rechazada, 2:aprobada
+//            UPDATE version 2: estado de solicitud, 0:pendiente, 1:aprobada, 2:rechazada
 //            $table->boolean('aprobada');
             $table->unsignedSmallInteger('estado');
 //            $table->date('fecha_aprobacion');
@@ -64,6 +64,7 @@ class CreateCreditosTable extends Migration
 
         Schema::table('solicitudes', function($table) {
             $table->foreign('cooperativa_id')->references('id')->on('cooperativas');
+//            $table->foreign('cooperativa_id')->references('id')->on('cooperativas')->onDelete('cascade')->onUpdate('cascade');
         });
 
         //        garantias
