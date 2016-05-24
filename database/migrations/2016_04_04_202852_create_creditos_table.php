@@ -133,6 +133,7 @@ class CreateCreditosTable extends Migration
         Schema::create('plan_creditos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('credito_id')->unsigned();
+            $table->unsignedSmallInteger('estado'); // 0: pendiente, 1: cancelado, 2: observacion
             $table->boolean('periodo_gracia'); // 0: nope, 1: sip
             $table->date('fecha_pago');
 
@@ -152,6 +153,7 @@ class CreateCreditosTable extends Migration
         Schema::create('amortizaciones', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('credito_id')->unsigned();
+            $table->integer('plan_credito_id')->unsigned();
 //            $table->boolean('estado'); // 0: nope, 1: sip
             $table->date('fecha_pago');
             $table->string('documento');

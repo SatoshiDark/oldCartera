@@ -76,7 +76,7 @@
                 <a href="#"><i class='fa fa-wrench'></i> <span>Configuracion general</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="{{ url('tipoprestamo') }}">Tipos de Creditos</a></li>
-                    <li><a href="#">Minerales de Produccion</a></li>
+                    <li><a href="{{ url('mineral') }}">Minerales de Produccion</a></li>
                     <li><a href="#">Configuracion de Usuarios</a></li>
                     {{--<li><a href="#">Permisos</a></li>--}}
 

@@ -9,7 +9,7 @@ class PlanCredito extends Model
     //
     protected $table = 'plan_creditos';
 
-    protected $fillable = array('credito_id','periodo_gracia','fecha_pago','cuota_capital','cuota_interes'
+    protected $fillable = array('credito_id','periodo_gracia','estado','fecha_pago','cuota_capital','cuota_interes'
         ,'total_cuota','saldo_capital','nota_modificacion');
     protected $dates = ['fecha_pago'];
 //    public function setFechaPagoAtrribute($date)

@@ -19,6 +19,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('solicitudes', 'SolicitudController');
     Route::resource('tipoprestamo', 'TipoPrestamoController');
     Route::resource('credito', 'CreditoController');
+    Route::resource('mineral', 'TipoMineralController');
     Route::post('aprobarsolicitud', 'SolicitudController@aprobarsolicitud');
 
 });
+
+Route::get('API/{solicitud}', function (App\Solicitud $solicitud){
+    return $solicitud;
+})->middleware('throttle:3');
