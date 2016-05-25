@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Cooperativa;
-use App\TipoMineral;
+use App\Credito;
+use App\Desembolso;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
-//use Validator, Input, Redirect;
 use App\Http\Requests;
 
-class CooperativaController extends Controller
+class DesembolsoController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -25,12 +20,6 @@ class CooperativaController extends Controller
     public function index()
     {
         //
-        $cooperativas = Cooperativa::orderBy('created_at', 'asc')->get();
-
-        return view('cooperativa.list', [
-            'cooperativas' => $cooperativas
-        ]);
-        //return view('cooperativa.list');
     }
 
     /**
@@ -41,8 +30,6 @@ class CooperativaController extends Controller
     public function create()
     {
         //
-        $minerales = TipoMineral::orderBy('created_at', 'asc')->get()->lists('nombre', 'id');
-        return view('cooperativa.create',['minerales' => $minerales]);
     }
 
     /**
@@ -54,9 +41,14 @@ class CooperativaController extends Controller
     public function store(Request $request)
     {
         //
+        $input = $request->all();
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required|max:255',
-            'nro_registro' => 'unique:cooperativas|required',
+            'credito_id' => 'required',
+            'importe' => 'required',
+            'fecha_pago' => 'required',
+            'nombre_completo' => 'required',
+            'ci' => 'required',
+//            'nro_registro' => 'unique:solicitudes|required',
         ]);
 
         if ($validator->fails()) {
@@ -64,13 +56,23 @@ class CooperativaController extends Controller
                 ->withInput()
                 ->withErrors($validator);
         }
+        $credito = Credito::findOrFail($input['credito_id']);
+        $desembolso = Credito::find($input['credito_id'])->desembolso;
+        //        Sum desembolsos
+        $sumDesembolsos = 0;
+        if (!empty($desembolso)) {
+            foreach ($desembolso as $row) {
+                $sumDesembolsos = $sumDesembolsos + $row['importe'];
+            }
+        }
+        if ($sumDesembolsos > $credito->importe_credito){
+            return back();
+        }
 
-        $cooperativa = new Cooperativa();
-        $input = $request->all();
-        $cooperativa->fill($input);
-        $cooperativa->save();
-
-        return redirect('/cooperativas');
+        $value = new Desembolso();
+        $value->fill($input);
+        $value->save();
+        return back();
     }
 
     /**
@@ -81,10 +83,7 @@ class CooperativaController extends Controller
      */
     public function show($id)
     {
-        $cooperativa = Cooperativa::findOrFail($id);
-        $mineral = TipoMineral::find($cooperativa->mineral_id);
-        $cooperativa->mineral= empty($mineral->nombre)? '':$mineral->nombre;
-        return view('cooperativa.show')->withCooperativa($cooperativa);
+        //
     }
 
     /**
@@ -96,8 +95,6 @@ class CooperativaController extends Controller
     public function edit($id)
     {
         //
-        $cooperativa = Cooperativa::findOrFail($id);
-        return view('cooperativa.edit')->withCooperativa($cooperativa);
     }
 
     /**
@@ -110,23 +107,6 @@ class CooperativaController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $cooperativa = Cooperativa::findOrFail($id);
-        $validator = Validator::make($request->all(), [
-            'nombre' => 'required|max:255',
-            'nro_registro' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return Redirect::back()
-                ->withInput()
-                ->withErrors($validator);
-        }
-        $input = $request->all();
-        $cooperativa->fill($input);
-        $cooperativa->save();
-
-
-        return redirect('/cooperativas');
     }
 
     /**

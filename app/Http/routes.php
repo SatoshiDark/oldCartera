@@ -20,6 +20,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('tipoprestamo', 'TipoPrestamoController');
     Route::resource('credito', 'CreditoController');
     Route::resource('mineral', 'TipoMineralController');
+    Route::resource('desembolso', 'DesembolsoController');
+    Route::resource('amortizacion', 'AmortizacionController');
     Route::post('aprobarsolicitud', 'SolicitudController@aprobarsolicitud');
 
 });

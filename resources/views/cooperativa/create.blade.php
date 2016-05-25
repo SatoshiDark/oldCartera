@@ -139,7 +139,11 @@
                     <input type="text" name="web" id="coop-web" class="form-control">
                 </div>
             </div>
+            <div class="form-group">
+                {!! Form::label('mineral_id', 'Mineral de Produccion:', ['class' => 'control-label']) !!}
 
+                {!! Form::select('mineral_id', $minerales) !!}
+            </div>
             {{--<!-- Nombre -->--}}
             {{--<div class="form-group">--}}
                 {{--<label for="nombre" class="col-sm-3 control-label">Nombre</label>--}}

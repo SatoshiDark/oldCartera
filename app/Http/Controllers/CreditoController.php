@@ -8,6 +8,8 @@ use App\Cooperativa;
 use App\TipoPrestamo;
 use App\ResolucionSolicitud;
 use App\PlanCredito;
+use App\Amortizacion;
+use App\Desembolso;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
@@ -178,7 +180,7 @@ class CreditoController extends Controller
 //        Sum desembolsos
         $sumDesembolsos = 0;
         if (!empty($desembolso)) {
-            foreach ($amortizacion as $row) {
+            foreach ($desembolso as $row) {
                 $sumDesembolsos = $sumDesembolsos + $row['importe'];
             }
         }

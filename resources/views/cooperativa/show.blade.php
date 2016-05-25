@@ -34,6 +34,7 @@
                 <h4><b>Fax:</b> {{$cooperativa->fax}}</h4>
                 <h4><b>Email:</b> {{$cooperativa->email}}</h4>
                 <h4><b>Website:</b> {{$cooperativa->web}}</h4>
+                <h4><b>Mineral de Producción:</b> {{$cooperativa->mineral}}</h4>
                 <div class="col-md-6 pull-right">
                     {!! Form::open([
                         'method' => 'DELETE',

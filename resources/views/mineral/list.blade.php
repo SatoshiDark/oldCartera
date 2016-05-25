@@ -31,17 +31,6 @@
                 <th>Tipo</th>
             </tr>
         </thead>
-        {{--<tfoot>--}}
-            {{--<tr>--}}
-                            {{--<th>Acciones</th>--}}
-                            {{--<th>Nombre</th>--}}
-                            {{--<th>Codigo</th>--}}
-                            {{--<th>Nro. Registro</th>--}}
-                            {{--<th>CI representante</th>--}}
-                            {{--<th>Nro. Socios</th>--}}
-                            {{--<th>Fecha Formacion</th>--}}
-                        {{--</tr>--}}
-        {{--</tfoot>--}}
         <tbody>
         @foreach ($data as $row)
             <tr>

@@ -113,24 +113,61 @@
                   </div><!-- /.box -->
 
                 </div>
-    {{--PARA ANADIR GRAFICA--}}
-    {{--<div class="col-xs-12">--}}
-        {{--<div class="box box-default">--}}
-            {{--<div class="box-header with-border">--}}
-                {{--<h3 class="box-title"><b>Grafica de Cuotas</b></h3>--}}
-                {{--<div class="box-tools pull-right">--}}
-                    {{--<a href="{{route('solicitudes.edit', $credito->id)}}" class="btn btn-sm btn-primary btn-flat pull-left"><i class='fa fa-edit'></i> </a>--}}
-                    {{--<a href="{{url('solicitudes')}}" class="btn btn-sm btn-info btn-flat pull-left"><i class='fa fa-th-large'></i> Lista</a>--}}
-                {{--</div>--}}
-            {{--</div><!-- /.box-header -->--}}
-            {{--<div class="box-body">--}}
-                {{--<div class="chart">--}}
-                    {{--<canvas id="areaChart" style="height: 249px; width: 555px;" width="555" height="249"></canvas>--}}
-                {{--</div>--}}
-            {{--</div><!-- /.box-body -->--}}
-        {{--</div><!-- /.box -->--}}
 
-    {{--</div>--}}
+    {{--Desembolsos Realizados--}}
+    @if (!empty($desembolso))
+    <div class="col-xs-12">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><b>Desembolsos Realizados</b></h3>
+                <div class="box-tools pull-right">
+                    {{--                            <a href="{{route('solicitudes.edit', $credito->id)}}" class="btn btn-sm btn-primary btn-flat pull-left"><i class='fa fa-edit'></i> </a>--}}
+                    <a href="{{url('credito')}}" class="btn btn-sm btn-info btn-flat pull-left"><i class='fa fa-th-large'></i> Lista</a>
+                </div>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                {{--array('credito_id','estado','fecha_pago','documento','importe','nombre_completo',--}}
+                {{--'ci','adjunto','observacion');--}}
+                <table id="desembolsos" class="display" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Estado</th>
+                        <th>Fecha de Pago</th>
+                        <th>ID. Documento</th>
+                        <th>Importe</th>
+                        <th>Nombre</th>
+                        <th>CI</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @foreach ($desembolso as $detalle)
+                        <tr>
+                            {{--                                    <td>{{ $detalle['periodo_gracia'] == 0 ? 'Si':'No'}}</td>--}}
+                            <td>
+                                {{--<small class="label bg-yellow">Pendiente</small>--}}
+                                {{--todo Fix si esta cancelado--}}
+                                @if ($detalle['estado'] == 0)
+                                <small class="label bg-green">Desembolsado</small>
+                                @else
+                                <small class="label bg-yellow">Pendiente</small>
+                                @endif
+                            </td>
+                            <td>{{ $detalle['fecha_pago'] }}</td>
+                            <td>{{ $detalle['documento'] }}</td>
+                            <td>{{ $detalle['importe'] }}</td>
+                            <td>{{ $detalle['nombre_completo'] }}</td>
+                            <td>{{ $detalle['ci'] }}</td>
+
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+
+    </div>
+    @endif
     {{-- Mostrar si aun no se ha desembolsado todo el monto --}}
     @if ($credito->importe_credito > $sum['desembolso'])
         <div class="col-xs-12">
@@ -144,6 +181,8 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                 @include('layouts.partials.errors')
+                    {{--array('credito_id','estado','fecha_pago','documento','importe','nombre_completo',--}}
+                    {{--'ci','adjunto','observacion');--}}
                     <p>Realiza los desembolsos en este formulario</p>
                     {!! Form::open(array('url' => 'desembolso')) !!}
                     {!! Form::hidden('credito_id', $credito->id) !!}
@@ -160,12 +199,20 @@
                                         {!! Form::input('date', 'fecha_pago', date('d-m-Y'), ['class' => 'form-control']) !!}
                                     </div>
                                     <div class="form-group">
+                                        {!! Form::label('documento', 'Identificador del Documento:', ['class' => 'control-label']) !!}
+                                        {!! Form::text('documento', '', ['class' => 'form-control']) !!}
+                                    </div>
+                                    <div class="form-group">
                                         {!! Form::label('nombre_completo', 'Nombre Completo Acreedor:', ['class' => 'control-label']) !!}
                                         {!! Form::text('nombre_completo', '', ['class' => 'form-control']) !!}
                                     </div>
                                     <div class="form-group">
                                         {!! Form::label('ci', 'C.I. Acreedor:', ['class' => 'control-label']) !!}
                                         {!! Form::text('ci', '', ['class' => 'form-control']) !!}
+                                    </div>
+                                    <div class="form-group">
+                                        {!! Form::label('observacion', 'Observaciones:', ['class' => 'control-label']) !!}
+                                        {!! Form::text('observacion', '', ['class' => 'form-control']) !!}
                                     </div>
 
                                 <!-- Add Button -->
@@ -184,6 +231,60 @@
         </div>
         @endif
 
+    {{--Amortizaciones Realizadas--}}
+    @if (!empty($amortizacion))
+        <div class="col-xs-12">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><b>Amortizaciones Realizadas</b></h3>
+                    <div class="box-tools pull-right">
+                        {{--                            <a href="{{route('solicitudes.edit', $credito->id)}}" class="btn btn-sm btn-primary btn-flat pull-left"><i class='fa fa-edit'></i> </a>--}}
+                        <a href="{{url('credito')}}" class="btn btn-sm btn-info btn-flat pull-left"><i class='fa fa-th-large'></i> Lista</a>
+                    </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    {{--array('credito_id','plan_credito_id','fecha_pago','documento','importe','nombre_depositante',--}}
+                    {{--'ci','adjunto','observacion');--}}
+                    <table id="amortizacion" class="display" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            {{--<th>Plan de credito</th>--}}
+                            <th>Fecha de Pago</th>
+                            <th>ID. Documento</th>
+                            <th>Importe</th>
+                            <th>Nombre</th>
+                            <th>CI</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        @foreach ($amortizacion as $detalle)
+                            <tr>
+                                {{--                                    <td>{{ $detalle['periodo_gracia'] == 0 ? 'Si':'No'}}</td>--}}
+                                {{--<td>--}}
+                                    {{--<small class="label bg-yellow">Pendiente</small>--}}
+                                    {{--todo Fix si esta cancelado--}}
+                                    {{--@if ($detalle['estado'] == 0)--}}
+                                        {{--<small class="label bg-green">Desembolsado</small>--}}
+                                    {{--@else--}}
+                                        {{--<small class="label bg-yellow">Pendiente</small>--}}
+                                    {{--@endif--}}
+                                {{--</td>--}}
+                                <td>{{ $detalle['fecha_pago'] }}</td>
+                                <td>{{ $detalle['documento'] }}</td>
+                                <td>{{ $detalle['importe'] }}</td>
+                                <td>{{ $detalle['nombre_depositante'] }}</td>
+                                <td>{{ $detalle['ci'] }}</td>
+
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+        </div>
+    @endif
     {{-- Mostrar si aun no se ha desembolsado todo el monto --}}
     @if ($credito->importe_credito > $sum['amortizacion'])
         <div class="col-xs-12">
@@ -197,12 +298,18 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     @include('layouts.partials.errors')
+                    {{--array('credito_id','plan_credito_id','fecha_pago','documento','importe','nombre_depositante',--}}
+                    {{--'ci','adjunto','observacion');--}}
                     <p>Realiza las amortizaciones en este formulario</p>
                     {!! Form::open(array('url' => 'amortizacion')) !!}
                     {!! Form::hidden('credito_id', $credito->id) !!}
                     <div class="form-group">
                         {!! Form::label('codigo_prestamo', 'Codigo Credito:', ['class' => 'control-label']) !!}
                         {!! Form::text('codigo_prestamo', $credito->codigo_prestamo, ['class' => 'form-control', 'disabled']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('documento', 'Identificador del Documento:', ['class' => 'control-label']) !!}
+                        {!! Form::text('documento', '', ['class' => 'form-control']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('importe', 'Importe:', ['class' => 'control-label']) !!}
@@ -219,6 +326,10 @@
                     <div class="form-group">
                         {!! Form::label('ci', 'C.I. Depositante:', ['class' => 'control-label']) !!}
                         {!! Form::text('ci', '', ['class' => 'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('observacion', 'Observaciones:', ['class' => 'control-label']) !!}
+                        {!! Form::text('observacion', '', ['class' => 'form-control']) !!}
                     </div>
 
                     <!-- Add Button -->
@@ -245,6 +356,12 @@
 $(document).ready(function() {
     $('#plancreditos').DataTable( {
         "order": [[ 6, "desc" ]]
+    } );
+    $('#desembolsos').DataTable( {
+        "order": [[ 1, "desc" ]]
+    } );
+    $('#amortizacion').DataTable( {
+        "order": [[ 1, "desc" ]]
     } );
 } );
 </script>
