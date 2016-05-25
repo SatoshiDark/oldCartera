@@ -22,6 +22,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('mineral', 'TipoMineralController');
     Route::resource('desembolso', 'DesembolsoController');
     Route::resource('amortizacion', 'AmortizacionController');
+    Route::resource('reporte', 'ReporteController');
     Route::post('aprobarsolicitud', 'SolicitudController@aprobarsolicitud');
 
 });
