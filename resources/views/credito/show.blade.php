@@ -13,7 +13,7 @@
         <div class="col-xs-12">
           <div class="box box-default">
             <div class="box-header with-border">
-              <h3 class="box-title"><b>Credito: </b>{{$credito->codigo_prestamo}} - {{$solicitud->nombre_proyecto}}    </h3>
+              <h3 class="box-title"><b>{{$solicitud->nombre_proyecto}} </b> - {{$credito->codigo_prestamo}}</h3>
                     @if ($credito->estado_prestamo == 0)
                         <small class="label bg-yellow"><i class="fa fa-warning"></i> Credito en Curso</small>
                     @else
@@ -30,17 +30,22 @@
                 <h4><b>Cooperativa:</b> {{$cooperativa->nombre}}</h4>
 {{--                <h4><b>Tipo de Prestamo:</b> {{$tipo_prestamo->nombre}}</h4>--}}
                 <h4><b>Codigo Prestamo:</b> {{$credito->codigo_prestamo}}</h4>
-                <h4><b>Nombre Proyecto:</b> {{$credito->nombre_proyecto}}</h4>
-                <h4><b>Fecha primer desembolso:</b> {{$credito->fecha_desembolso}}</h4>
-                <h4><b>Importe:</b> {{$credito->importe_credito}} Bolivianos</h4>
+                <h4><b>Monto Aprobado por el directorio:</b> {{$credito->importe_credito}}</h4>
+                <h4><b>Condiciones de Prestamo</b></h4>
                 <h4><b>Interes:</b> {{$credito->interes}} %</h4>
                 <h4><b>Plazo:</b> {{$credito->plazo}} meses</h4>
                 <h4><b>Tiempo de Gracia:</b> {{$credito->tiempo_gracia}} meses</h4>
-
+                <h4></h4>
+                <h4><b>Cronograma de desembolso segun proyecto</b></h4>
+                @foreach ($desembolso as $detalle)
+                    <h4><b>Desembolso: </b>{{ $detalle['fecha_pago'] }}</h4>
+                    <h4><b>Importe: </b>{{ $detalle['importe'] }} Bs.</h4>
+                @endforeach
+                <h4></h4>
                 <h4><b>Por Desembolsar:</b> {{$credito->importe_credito - $sum['desembolso']}} Bolivianos</h4>
                 <h4><b>Total Desembolsado:</b> {{$sum['desembolso']}} Bolivianos</h4>
-                <h4><b>Por Amortizar:</b> {{$credito->importe_credito - $sum['amortizacion']}} Bolivianos</h4>
-                <h4><b>Total Amortizado:</b> {{$sum['amortizacion']}} Bolivianos</h4>
+                <h4><b>Saldo Capital:</b> {{$credito->importe_credito - $sum['amortizacion']}} Bolivianos</h4>
+                <h4><b>Amortización Efectiva:</b> {{$sum['amortizacion']}} Bolivianos</h4>
                 <h4><b>Estado:</b> {{ $credito->estado_prestamo==0 ? "En Curso":"Finalizado"  }}</h4>
 {{--                <a href="{{route('solicitudes.edit', $credito->id)}}" class="btn btn-sm btn-primary btn-flat pull-left"><i class='fa fa-edit'></i> </a>--}}
 
@@ -59,12 +64,10 @@
                         </div>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <h4><b>Saldo Capital:</b> {{$credito->importe_credito}} Bolivianos</h4>
-                        <h4><b>Capital prestado:</b> {{$credito->importe_credito}} Bolivianos</h4>
+                        <h4><b>Capital Otorgado:</b> {{$credito->importe_credito}} Bolivianos</h4>
                         <h4><b>Plazo: </b>{{$credito->plazo}} Meses</h4>
                         <h4><b>Tiempo de Gracia: </b>{{$credito->tiempo_gracia}} Meses</h4>
                         <h4><b>Interes Anual: </b>{{$credito->interes}} %</h4>
-{{--                        <h4><b>Interes Mensual: </b>{{$tipo_prestamo->interes}} %</h4>--}}
                         <h4>-------</h4>
 
                         <table id="plancreditos" class="display" cellspacing="0" width="100%">
@@ -437,7 +440,7 @@ $(document).ready(function() {
             //Boolean - Whether to fill the dataset with a color
             datasetFill: true,
             //String - A legend template
-            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+            //legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
             //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
             maintainAspectRatio: true,
             //Boolean - whether to make the chart responsive to window resizing
@@ -446,127 +449,6 @@ $(document).ready(function() {
 
         //Create the line chart
         areaChart.Line(areaChartData, areaChartOptions);
-
-        //-------------
-        //- LINE CHART -
-        //--------------
-        var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
-        var lineChart = new Chart(lineChartCanvas);
-        var lineChartOptions = areaChartOptions;
-        lineChartOptions.datasetFill = false;
-        lineChart.Line(areaChartData, lineChartOptions);
-
-        //-------------
-        //- PIE CHART -
-        //-------------
-        // Get context with jQuery - using jQuery's .get() method.
-        var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-        var pieChart = new Chart(pieChartCanvas);
-        var PieData = [
-            {
-                value: 700,
-                color: "#f56954",
-                highlight: "#f56954",
-                label: "Chrome"
-            },
-            {
-                value: 500,
-                color: "#00a65a",
-                highlight: "#00a65a",
-                label: "IE"
-            },
-            {
-                value: 400,
-                color: "#f39c12",
-                highlight: "#f39c12",
-                label: "FireFox"
-            },
-            {
-                value: 600,
-                color: "#00c0ef",
-                highlight: "#00c0ef",
-                label: "Safari"
-            },
-            {
-                value: 300,
-                color: "#3c8dbc",
-                highlight: "#3c8dbc",
-                label: "Opera"
-            },
-            {
-                value: 100,
-                color: "#d2d6de",
-                highlight: "#d2d6de",
-                label: "Navigator"
-            }
-        ];
-        var pieOptions = {
-            //Boolean - Whether we should show a stroke on each segment
-            segmentShowStroke: true,
-            //String - The colour of each segment stroke
-            segmentStrokeColor: "#fff",
-            //Number - The width of each segment stroke
-            segmentStrokeWidth: 2,
-            //Number - The percentage of the chart that we cut out of the middle
-            percentageInnerCutout: 50, // This is 0 for Pie charts
-            //Number - Amount of animation steps
-            animationSteps: 100,
-            //String - Animation easing effect
-            animationEasing: "easeOutBounce",
-            //Boolean - Whether we animate the rotation of the Doughnut
-            animateRotate: true,
-            //Boolean - Whether we animate scaling the Doughnut from the centre
-            animateScale: false,
-            //Boolean - whether to make the chart responsive to window resizing
-            responsive: true,
-            // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-            maintainAspectRatio: true,
-            //String - A legend template
-            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
-        };
-        //Create pie or douhnut chart
-        // You can switch between pie and douhnut using the method below.
-        pieChart.Doughnut(PieData, pieOptions);
-
-        //-------------
-        //- BAR CHART -
-        //-------------
-        var barChartCanvas = $("#barChart").get(0).getContext("2d");
-        var barChart = new Chart(barChartCanvas);
-        var barChartData = areaChartData;
-        barChartData.datasets[1].fillColor = "#00a65a";
-        barChartData.datasets[1].strokeColor = "#00a65a";
-        barChartData.datasets[1].pointColor = "#00a65a";
-        var barChartOptions = {
-            //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-            scaleBeginAtZero: true,
-            //Boolean - Whether grid lines are shown across the chart
-            scaleShowGridLines: true,
-            //String - Colour of the grid lines
-            scaleGridLineColor: "rgba(0,0,0,.05)",
-            //Number - Width of the grid lines
-            scaleGridLineWidth: 1,
-            //Boolean - Whether to show horizontal lines (except X axis)
-            scaleShowHorizontalLines: true,
-            //Boolean - Whether to show vertical lines (except Y axis)
-            scaleShowVerticalLines: true,
-            //Boolean - If there is a stroke on each bar
-            barShowStroke: true,
-            //Number - Pixel width of the bar stroke
-            barStrokeWidth: 2,
-            //Number - Spacing between each of the X value sets
-            barValueSpacing: 5,
-            //Number - Spacing between data sets within X values
-            barDatasetSpacing: 1,
-            //String - A legend template
-            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
-            //Boolean - whether to make the chart responsive
-            responsive: true,
-            maintainAspectRatio: true
-        };
-
-        barChartOptions.datasetFill = false;
-        barChart.Bar(barChartData, barChartOptions);
     });
 </script>
 @endpush
