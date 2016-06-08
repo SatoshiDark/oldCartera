@@ -1,0 +1,13 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Laravel template
+vendor/
+node_modules/
+
+
+
+# Laravel 5 & Lumen specific
+.idea
+
+# Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
+.rocketeer/
+

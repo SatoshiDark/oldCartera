@@ -16,4 +16,8 @@ class PlanCredito extends Model
 //    {
 //        $this->attributes['fecha_pago'] = Carbon::createFromFormat('d-m-Y', $date)->format('d-m-Y');
 //    }
+    public function amortizacion()
+    {
+        return $this->hasMany('App\Amortizacion');
+    }
 }

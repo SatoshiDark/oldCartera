@@ -159,6 +159,9 @@ class CreateCreditosTable extends Migration
             $table->string('documento');
 
             $table->double('importe');
+            $table->double('tre');
+            $table->double('interes_corriente');
+            $table->double('capital');
             $table->string('nombre_depositante');
             $table->string('ci');
             $table->string('adjunto');
@@ -168,6 +171,7 @@ class CreateCreditosTable extends Migration
         });
         Schema::table('amortizaciones', function($table) {
             $table->foreign('credito_id')->references('id')->on('creditos');
+            $table->foreign('plan_credito_id')->references('id')->on('plan_creditos');
         });
 
         // Control credito???
