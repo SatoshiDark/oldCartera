@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('contentheader_title')
-	Tipos de Prestamo
+	Modalidades de Préstamo
 @endsection
 @section('htmlheader_title')
 	Detalle
@@ -13,7 +13,7 @@
         <div class="col-xs-12">
           <div class="box box-default">
             <div class="box-header with-border">
-              <h3 class="box-title"><b>Tipo de Prestamo</b> {{$tipoprestamo->nombre}}</h3>
+              <h3 class="box-title"><b>Modalidad de Préstamo</b> {{$tipoprestamo->nombre}}</h3>
               <div class="box-tools pull-right">
                     <a href="{{route('tipoprestamo.edit', $tipoprestamo->id)}}" class="btn btn-sm btn-primary btn-flat pull-left"><i class='fa fa-edit'></i> </a>
                     <a href="{{url('tipoprestamo')}}" class="btn btn-sm btn-info btn-flat pull-left"><i class='fa fa-th-large'></i> Lista</a>

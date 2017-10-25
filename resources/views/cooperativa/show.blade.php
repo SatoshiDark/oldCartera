@@ -20,7 +20,8 @@
                 </div>
             </div><!-- /.box-header -->
             <div class="box-body">
-                <h4><b>Nombre:</b> {{$cooperativa->nombre}}</h4>
+                <h4><b>Nombre o razón social de la cooperativa solicitante:</b> {{$cooperativa->nombre}}</h4>
+                <h4><b>Personeria Juridica:</b> {{$cooperativa->personeria_juridica}}</h4>
                 <h4><b>Codigo:</b> {{$cooperativa->codigo}}</h4>
                 <h4><b>Nro. de Registro:</b> {{$cooperativa->nro_registro}}</h4>
                 <h4><b>Derecho Consesionario:</b> {{$cooperativa->derecho_consesionario}}</h4>
@@ -30,11 +31,13 @@
                 <h4><b>Fecha Formacion:</b> {{$cooperativa->fecha_formacion}}</h4>
                 <h4><b>Fecha Resolucion:</b> {{$cooperativa->fecha_resolucion}}</h4>
                 <h4><b>Direccion:</b> {{$cooperativa->direccion}}</h4>
+                <h4><b>Coor. UTM:</b> {{$cooperativa->coordinadas_utm}}</h4>
                 <h4><b>Telefono:</b> {{$cooperativa->telefono}}</h4>
                 <h4><b>Fax:</b> {{$cooperativa->fax}}</h4>
                 <h4><b>Email:</b> {{$cooperativa->email}}</h4>
                 <h4><b>Website:</b> {{$cooperativa->web}}</h4>
                 <h4><b>Mineral de Producción:</b> {{$cooperativa->mineral}}</h4>
+                <h4><b>Producción Anual:</b> {{$cooperativa->produccion_anual}}</h4>
                 <div class="col-md-6 pull-right">
                     {!! Form::open([
                         'method' => 'DELETE',

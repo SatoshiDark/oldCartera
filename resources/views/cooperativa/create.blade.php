@@ -27,12 +27,20 @@
 
             <!-- Nombre -->
             <div class="form-group">
-                <label for="nombre" class="col-sm-3 control-label">Nombre</label>
+                <label for="nombre" class="col-sm-3 control-label">* Nombre o razón social de la cooperativa solicitante</label>
 
                 <div class="col-sm-6">
                     <input type="text" name="nombre" id="coop-nombre" class="form-control" value="{{ old('nombre') }}">
                 </div>
             </div>
+            <!-- Personeria juridica -->
+                        <div class="form-group">
+                            <label for="personeria_juridica" class="col-sm-3 control-label">Personeria Juridica</label>
+
+                            <div class="col-sm-6">
+                                <input type="text" name="personeria_juridica" id="personeria_juridica" class="form-control" value="{{ old('personeria_juridica') }}">
+                            </div>
+                        </div>
             <!-- Codigo -->
             <div class="form-group">
                 <label for="codigo" class="col-sm-3 control-label">Codigo</label>
@@ -43,7 +51,7 @@
             </div>
             <!-- Nro de Registro -->
             <div class="form-group">
-                <label for="nro_registro" class="col-sm-3 control-label">Nro. de Registro</label>
+                <label for="nro_registro" class="col-sm-3 control-label">NRO. DE REGISTRO</label>
 
                 <div class="col-sm-6">
                     <input type="text" name="nro_registro" id="coop-registro" class="form-control">
@@ -51,7 +59,7 @@
             </div>
             <!-- Derecho consesionario -->
             <div class="form-group">
-                <label for="derecho_consesionario" class="col-sm-3 control-label">Derecho Consesionario</label>
+                <label for="derecho_consesionario" class="col-sm-3 control-label">DERECHO CONSESIONARIO</label>
 
                 <div class="col-sm-6">
                     <input type="text" name="derecho_consesionario" id="coop-derecho_c" class="form-control">
@@ -105,6 +113,13 @@
                     <input type="text" name="direccion" id="coop-direccion" class="form-control">
                 </div>
             </div>
+            <div class="form-group">
+                            <label for="coordinadas_utm" class="col-sm-3 control-label">Coor. UTM</label>
+
+                            <div class="col-sm-6">
+                                <input type="text" name="coordinadas_utm" id="coordinadas_utm" class="form-control">
+                            </div>
+                        </div>
             <!-- Telefono -->
             <div class="form-group">
                 <label for="telefono" class="col-sm-3 control-label">Telefono</label>
@@ -140,21 +155,17 @@
                 </div>
             </div>
             <div class="form-group">
-                {!! Form::label('mineral_id', 'Mineral de Produccion:', ['class' => 'control-label']) !!}
-
-                {!! Form::select('mineral_id', $minerales) !!}
+                {!! Form::label('mineral_id', 'Mineral de Produccion:', ['class' => 'col-sm-3 control-label']) !!}
+                <div class="col-sm-6">
+                    {!! Form::select('mineral_id', $minerales, ['class' => 'form-control']) !!}
+                    </div>
             </div>
-            {{--<!-- Nombre -->--}}
-            {{--<div class="form-group">--}}
-                {{--<label for="nombre" class="col-sm-3 control-label">Nombre</label>--}}
-
-                {{--<div class="col-sm-6">--}}
-                    {{--<input type="text" name="nombre" id="coop-nombre" class="form-control">--}}
-                {{--</div>--}}
-            {{--</div>--}}
-
-
-
+            <div class="form-group">
+                {!! Form::label('produccion_anual', 'Produccion Anual:', ['class' => 'col-sm-3 control-label']) !!}
+                <div class="col-sm-6">
+                    {!! Form::text('produccion_anual', '', ['class' => 'form-control']) !!}
+                    </div>
+            </div>
             <!-- Add Button -->
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-6">

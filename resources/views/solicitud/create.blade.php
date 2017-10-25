@@ -29,19 +29,35 @@
                 <div class="form-group">
                     {!! Form::label('cooperativa_id', 'Cooperativa:', ['class' => 'control-label']) !!}
 
-                    {!! Form::select('cooperativa_id', $cooperativas) !!}
+                    {!! Form::select('cooperativa_id', $cooperativas, ['class' => 'form-control']) !!}
                 </div>
                 <div class="form-group">
                     {!! Form::label('tipo_credito_id', 'Tipo Creditos:', ['class' => 'control-label']) !!}
-                    {!! Form::select('tipo_credito_id', $tipo_prestamos) !!}
+                    {!! Form::select('tipo_credito_id', $tipo_prestamos, ['class' => 'form-control']) !!}
+                </div>
+                <div class="form-group">
+                    {!! Form::label('objeto_prestamo', 'Objeto del Prestamo:', ['class' => 'control-label']) !!}
+                    {!! Form::select('objeto_prestamo', ['Mineria','Instalacion de planta metalurgica'], ['class' => 'form-control']) !!}
                 </div>
                 <div class="form-group">
                     {!! Form::label('nro_solicitud', 'Nro. Solicitud:', ['class' => 'control-label']) !!}
                     {!! Form::text('nro_solicitud', null, ['class' => 'form-control']) !!}
                 </div>
                 <div class="form-group">
-                    {!! Form::label('nombre_proyecto', 'Nombre del Proyecto:', ['class' => 'control-label']) !!}
+                    {!! Form::label('nombre_proyecto', 'DENOMINACIÓN DEL PROYECTO:', ['class' => 'control-label']) !!}
                     {!! Form::text('nombre_proyecto', null, ['class' => 'form-control']) !!}
+                </div>
+                <div class="form-group">
+                    {!! Form::label('nombre_proyectista', 'NOMBRE PROYECTISTA:', ['class' => 'control-label']) !!}
+                    {!! Form::text('nombre_proyectista', null, ['class' => 'form-control']) !!}
+                </div>
+                <div class="form-group">
+                    {!! Form::label('licencia_ambiental', 'LICENCIA AMBIENTAL:', ['class' => 'control-label']) !!}
+                    {!! Form::text('licencia_ambiental', null, ['class' => 'form-control']) !!}
+                </div>
+                <div class="form-group">
+                    {!! Form::label('federacion_afiliacion', 'FEDERACION AFILIADA:', ['class' => 'control-label']) !!}
+                    {!! Form::text('federacion_afiliacion', null, ['class' => 'form-control']) !!}
                 </div>
                 <div class="form-group">
                             {!! Form::label('fecha_solicitud', 'Fecha Solicitud:', ['class' => 'control-label']) !!}

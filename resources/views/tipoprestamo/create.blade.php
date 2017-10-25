@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('contentheader_title')
-	Tipos de Prestamos
+	Modalidades de Préstamo
 @endsection
 @section('htmlheader_title')
 	Crear
@@ -13,7 +13,7 @@
         <div class="col-xs-12">
           <div class="box box-default">
             <div class="box-header with-border">
-              <h3 class="box-title">Nueva Tipo de Prestamo</h3>
+              <h3 class="box-title">Nueva Modalidad de Préstamo</h3>
               <div class="box-tools pull-right">
                             <a href="{{url('tipoprestamo')}}" class="btn btn-sm btn-info btn-flat pull-left"><i class='fa fa-th-large'></i> Lista</a>
 
@@ -29,15 +29,15 @@
                     {!! Form::text('nombre', null, ['class' => 'form-control']) !!}
                 </div>
                 <div class="form-group">
-                    {!! Form::label('minimo', 'Monto Minimo de Prestamo:', ['class' => 'control-label']) !!}
-                    {!! Form::text('minimo', null, ['class' => 'form-control']) !!}
+                    {!! Form::label('minimo', 'Monto Mínimo de Préstamo:', ['class' => 'control-label']) !!}
+                    {!! Form::number('minimo', null, ['class' => 'form-control','step' => '0.1']) !!}
                 </div>
                 <div class="form-group">
-                    {!! Form::label('maximo', 'Monto Maximo de Prestamo:', ['class' => 'control-label']) !!}
-                    {!! Form::text('maximo', null, ['class' => 'form-control']) !!}
+                    {!! Form::label('maximo', 'Monto Máximo de Préstamo:', ['class' => 'control-label']) !!}
+                    {!! Form::number('maximo', null, ['class' => 'form-control','step' => '0.1']) !!}
                 </div>
                 <div class="form-group">
-                    {!! Form::label('tiempo_de_gracia', 'Tiempo de gracia (expresado en meses):', ['class' => 'control-label']) !!}
+                    {!! Form::label('tiempo_de_gracia', 'Tiempo de grácia (expresado en meses):', ['class' => 'control-label']) !!}
                     {!! Form::number('tiempo_de_gracia', 1, ['class' => 'form-control']) !!}
                 </div>
                 <div class="form-group">

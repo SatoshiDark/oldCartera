@@ -8,9 +8,13 @@ use App\Cooperativa;
 use App\TipoPrestamo;
 use App\ResolucionSolicitud;
 use App\PlanCredito;
+use App\MovimientoCredito;
 use App\Amortizacion;
 use App\Desembolso;
 
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -20,6 +24,19 @@ use App\Http\Requests;
 
 class CreditoController extends Controller
 {
+
+    /**
+     * List of to-dos
+     * Remap Desembolsos
+     * Create new views for amortizaciones
+     * Create controller for amortizaciones
+     * End a credit
+     * Update mainscreen with realdata values
+     * Make a report
+     * Include delete action on controller
+     * Include delete action on view
+     *
+     */
     /**
      * Display a listing of the resource.
      *
@@ -52,7 +69,7 @@ class CreditoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -76,7 +93,7 @@ class CreditoController extends Controller
         $solicitud = Solicitud::findOrFail($id);
 
         // ESTADOS.- 0. pendiente, 1. aprobada, 2.rechazada
-        if($solicitud->estado >= 1){
+        if ($solicitud->estado >= 1) {
             return Redirect::back()
                 ->withInput()
                 ->withErrors(array("La solicitud ya fue aprobada, contacte al administrador del sistema."));
@@ -88,18 +105,18 @@ class CreditoController extends Controller
         $cooperativa = Cooperativa::findOrFail($solicitud->cooperativa_id);
 
 
-        $saldo_capital=$solicitud->importe_solicitado;
-        $plazo=$tipo_prestamo->tiempo_maximo_pago;
-        $gracia=$tipo_prestamo->tiempo_de_gracia;
-        $interes_anual=$tipo_prestamo->interes;
+        $saldo_capital = $solicitud->importe_solicitado;
+        $plazo = $tipo_prestamo->tiempo_maximo_pago;
+        $gracia = $tipo_prestamo->tiempo_de_gracia;
+        $interes_anual = $tipo_prestamo->interes;
         //la fecha de inicio comienza al primer desembolso
-        $fecha_ini=$request->fecha_desembolso;
+        $fecha_ini = $request->fecha_desembolso;
 
-        $detalle_plan = $this->createPlanCredito($saldo_capital,$plazo,$gracia,$interes_anual,$fecha_ini);
+        $detalle_plan = $this->createPlanCredito($saldo_capital, $plazo, $gracia, $interes_anual, $fecha_ini);
 
         $resolucion = new ResolucionSolicitud();
-        $resolucion->fill(array('solicitud_id'=>$solicitud->id, 'estado'=>1,
-            "fecha_resolucion"=>$request->fecha_aprobacion, 'monto_aprobado'=>$solicitud->importe_solicitado));
+        $resolucion->fill(array('solicitud_id' => $solicitud->id, 'estado' => 1,
+            "fecha_resolucion" => $request->fecha_aprobacion, 'monto_aprobado' => $solicitud->importe_solicitado));
 
         $resolucion->save();
         $solicitud->estado = 1;
@@ -108,42 +125,42 @@ class CreditoController extends Controller
 //      Creando el nuevo credito
 
         $credito = new Credito();
-        $data = ['solicitud_id'=>$solicitud->id,
-            'cooperativa_id'=>$solicitud->cooperativa_id,
-            'codigo_prestamo'=>$request->codigo_prestamo,
+        $data = ['solicitud_id' => $solicitud->id,
+            'cooperativa_id' => $solicitud->cooperativa_id,
+            'codigo_prestamo' => $request->codigo_prestamo,
             //Estado del Prestamo: 0. pendiente, 1. Finalizado, 2. Otros
-            'estado_prestamo'=>0,
-            'fecha_desembolso'=>$fecha_ini,
+            'estado_prestamo' => 0,
+            'fecha_desembolso' => $fecha_ini,
 //            'fecha_pago'
-            'moneda'=> 'Bolivianos',
-            'plazo'=> $plazo,
-            'tiempo_gracia'=> $gracia,
-            'importe_credito'=> $saldo_capital,
-            'interes'=> $interes_anual,
-            'saldo_capital'=> $saldo_capital,
-            'suma_total_pagado'=> 0,
+            'moneda' => 'Bolivianos',
+            'plazo' => $plazo,
+            'tiempo_gracia' => $gracia,
+            'importe_credito' => $saldo_capital,
+            'interes' => $interes_anual,
+            'saldo_capital' => $saldo_capital,
+            'suma_total_pagado' => 0,
 
-            ];
+        ];
         $credito->fill($data);
         $credito->save();
 
 //        return $detalle_plan;
         // todo llenando plan de creditos
 
-        foreach ($detalle_plan as $row){
+        foreach ($detalle_plan as $row) {
             $plan_row = new PlanCredito();
-            $plan_row->credito_id= $credito->id;
-            $plan_row->periodo_gracia= $row['periodo_gracia'];
-            $plan_row->fecha_pago= $row['fecha'];
-            $plan_row->cuota_capital= $row['cuota_mes'];
-            $plan_row->cuota_interes= $row['cuota_interes'];
-            $plan_row->total_cuota= $row['cuota_total'];
-            $plan_row->saldo_capital= $row['saldo_capital'];
+            $plan_row->credito_id = $credito->id;
+            $plan_row->periodo_gracia = $row['periodo_gracia'];
+            $plan_row->fecha_pago = $row['fecha'];
+            $plan_row->cuota_capital = $row['cuota_mes'];
+            $plan_row->cuota_interes = $row['cuota_interes'];
+            $plan_row->total_cuota = $row['cuota_total'];
+            $plan_row->saldo_capital = $row['saldo_capital'];
             $plan_row->save();
 //            return $plan_row;
         }
 
-        return redirect("/credito/".$credito->id);
+        return redirect("/credito/" . $credito->id);
 //        return "Solicitud Correctamente Aprobada";
 //        $value = new Solicitud();
 //        $input = $request->all();
@@ -154,19 +171,19 @@ class CreditoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         //
         $credito = Credito::findOrFail($id);
-        $plan = Credito::find($id)->plan;
-        $desembolso = Credito::find($id)->desembolso;
-        $amortizacion = Credito::find($id)->amortizacion;
+        $plan = $credito->plan;
+        $desembolso = $credito->movimientos()->where('tipo', 0)->get();
+        $amortizacion = $credito->movimientos()->where('tipo', 1)->get();
         $cooperativa = Cooperativa::findOrFail($credito->cooperativa_id);
         $solicitud = Solicitud::findOrFail($credito->solicitud_id);
-        $sum=array();
+        $sum = array();
 //return $solicitud;
 //        Sum amortizaciones
         $sumAmortizacion = 0;
@@ -190,7 +207,6 @@ class CreditoController extends Controller
 //        return $plan;
 
 
-
 //        $saldo_capital=$solicitud->importe_solicitado;
 //        $plazo=$tipo_prestamo->tiempo_maximo_pago;
 //        $gracia=$tipo_prestamo->tiempo_de_gracia;
@@ -209,7 +225,7 @@ class CreditoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -220,8 +236,8 @@ class CreditoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -232,7 +248,7 @@ class CreditoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -240,49 +256,144 @@ class CreditoController extends Controller
         //
     }
 
-    public function createPlanCredito ($saldo_capital, $plazo, $gracia, $interes_anual,$fecha_ini){
+    public function testPlanCredito()
+    {
+        // Pruebas Plan
+        $monto_prestamo = 800000;
+        $interes_anual = 6;
+        $plazo = 36;
+        $gracia = 3;
+        $fecha_ini = "2015-12-29";
+        // Nueva Variable: Dia Pago
+        $diaPago = 29;
+        return $this->createNewPlanCredito($monto_prestamo, $plazo, $gracia, $interes_anual, $fecha_ini, $diaPago);
+        $testPlan = new MovimientoCredito(['tipo' => '0']);
 
-        $interes_mensual=$interes_anual/12/100;
+        return $testPlan;
+    }
 
-        $cuota_capital_mes=round($saldo_capital/($plazo-$gracia),2);
+    public function createNewPlanCredito($saldo_capital, $plazo, $gracia, $interesAnual, $fecha_ini, $diaPago)
+    {
+        // Generate Interes
+        // Mensual: anual/mesesAño/porcentaje
+        $interes_mensual = $interesAnual/12/100;
+        // Diario: Mensual/30Dias
+        $interesDiario = $interes_mensual/30;
 
-        $contador_mes =0;
+        // Generate Dates TODO Agregar DiaPago
+        $start = new DateTime($fecha_ini);
+        $year = $start->format('Y');
+        $month = $start->format('m');
+        $day = $start->format('d');
+        $finishDate = new DateTime($fecha_ini);
+        $finishDate->setDate($year, $month + $plazo,$diaPago);
+        //return $start->format('Y-m-d');
+        //return $finishDate->format('Y-m-d');
+
+        // Main loop
+        $tempOldDate = new DateTime($fecha_ini);
+        $mainPC = [];
+        $cuotaCapitalMes = $saldo_capital / ($plazo - $gracia);
+        $saldoCapital = $saldo_capital;
+        for($i=1; $i<=$plazo; $i++){
+            $tempNewDate = new DateTime();
+            $tempNewDate->setDate($year,$month+$i,$diaPago);
+            $mainPC[$i]['fechaInicio'] = $tempOldDate->format('Y-m-d');
+            $mainPC[$i]['fechaPago'] = $tempNewDate->format('Y-m-d');
+            $mainPC[$i]['diasDiferencia'] = date_diff($tempOldDate,$tempNewDate, '%d')->days;
+            if($i<=$gracia){
+                $mainPC[$i]['capitalAmortizar'] = 0;
+            }
+            else {
+                $mainPC[$i]['capitalAmortizar'] = round($cuotaCapitalMes,2);
+            }
+            $mainPC[$i]['interesSaldos'] = round($saldoCapital*$interesDiario*$mainPC[$i]['diasDiferencia'], 2);
+            $saldoCapital -= $mainPC[$i]['capitalAmortizar'];
+            $mainPC[$i]['cuotaTotalMes'] = round($mainPC[$i]['capitalAmortizar'] + $mainPC[$i]['interesSaldos'], 2);
+            $mainPC[$i]['saldoCapital'] = round($saldoCapital, 2);
+            $tempOldDate = new DateTime();
+            $tempOldDate->setDate($year,$month+$i,$diaPago);
+        }
+        return $mainPC;
+        $interval = DateInterval::createFromDateString('1 month');
+        $end = new DateTime($fecha_ini);
+        $end->add(new DateInterval('P' . $plazo . 'M'));
+
+        $occurrences = new DatePeriod($start, $interval, $end);
+        $detalle_plan = [];
+        $contador_mes = 0;
+        $cuota_capital_mes = round($saldo_capital / ($plazo - $gracia), 2); // Remove
+        foreach ($occurrences as $occurrence) {
+            $detalle_plan[$contador_mes]['fecha'] = $occurrence->format('Y-m-d');
+            if ($contador_mes < $gracia) {
+                $detalle_plan[$contador_mes]['periodo_gracia'] = 0;
+                $detalle_plan[$contador_mes]['cuota_mes'] = 0;
+                $cuota_interes = round($saldo_capital * $interes_mensual, 2);
+                $detalle_plan[$contador_mes]['cuota_interes'] = $cuota_interes;
+                $cuota_total = 0 + $cuota_interes;
+                $detalle_plan[$contador_mes]['cuota_total'] = $cuota_total;
+                $detalle_plan[$contador_mes]['saldo_capital'] = $saldo_capital;
+            } else {
+                $detalle_plan[$contador_mes]['periodo_gracia'] = 1;
+                $detalle_plan[$contador_mes]['cuota_mes'] = $cuota_capital_mes;
+                $cuota_interes = round($saldo_capital * $interes_mensual, 2);
+                $detalle_plan[$contador_mes]['cuota_interes'] = $cuota_interes;
+                $cuota_total = $cuota_capital_mes + $cuota_interes;
+                $detalle_plan[$contador_mes]['cuota_total'] = $cuota_total;
+                $saldo_capital = $saldo_capital - $cuota_capital_mes;
+                if ($saldo_capital >= 0) {
+                    $detalle_plan[$contador_mes]['saldo_capital'] = $saldo_capital;
+                } else {
+                    $detalle_plan[$contador_mes]['saldo_capital'] = 0;
+                }
+
+            }
+            $contador_mes++;
+        }
+        return $detalle_plan;
+    }
+
+    public function createPlanCredito($saldo_capital, $plazo, $gracia, $interes_anual, $fecha_ini)
+    {
+
+        $interes_mensual = $interes_anual / 12 / 100;
+
+        $cuota_capital_mes = round($saldo_capital / ($plazo - $gracia), 2);
+
+        $contador_mes = 0;
+        // Primer Mes diferencia
         $date = date('Y-m-d', strtotime($fecha_ini));
-        $detalle_plan=[];
-        while ($contador_mes < $plazo)
-        {
-            $detalle_plan[$contador_mes]['fecha']=$date;
+        $date = date('Y-m-d', strtotime($date . ' + 1 month'));
+        $detalle_plan = [];
+        while ($contador_mes < $plazo) {
+            $detalle_plan[$contador_mes]['fecha'] = $date;
 
-            $date=date('Y-m-d', strtotime($date. ' + 30 days'));
+            $date = date('Y-m-d', strtotime($date . ' + 30 days'));
 
-            if($contador_mes<$gracia)
-            {
-                $detalle_plan[$contador_mes]['periodo_gracia']=0;
-                $detalle_plan[$contador_mes]['cuota_mes']=0;
-                $cuota_interes=round($saldo_capital*$interes_mensual,2);
-                $detalle_plan[$contador_mes]['cuota_interes']=$cuota_interes;
-                $cuota_total=0+$cuota_interes;
-                $detalle_plan[$contador_mes]['cuota_total']=$cuota_total;
-                $detalle_plan[$contador_mes]['saldo_capital']=$saldo_capital;
-            }
-            else
-            {
-                $detalle_plan[$contador_mes]['periodo_gracia']=1;
-                $detalle_plan[$contador_mes]['cuota_mes']=$cuota_capital_mes;
-                $cuota_interes=round($saldo_capital*$interes_mensual,2);
-                $detalle_plan[$contador_mes]['cuota_interes']=$cuota_interes;
-                $cuota_total=$cuota_capital_mes+$cuota_interes;
-                $detalle_plan[$contador_mes]['cuota_total']=$cuota_total;
-                $saldo_capital=$saldo_capital-$cuota_capital_mes;
-                if($saldo_capital>=0){
-                    $detalle_plan[$contador_mes]['saldo_capital']=$saldo_capital;
-                }
-                else{
-                    $detalle_plan[$contador_mes]['saldo_capital']=0;
+            if ($contador_mes < $gracia) {
+                $detalle_plan[$contador_mes]['periodo_gracia'] = 0;
+                $detalle_plan[$contador_mes]['cuota_mes'] = 0;
+                $cuota_interes = round($saldo_capital * $interes_mensual, 2);
+                $detalle_plan[$contador_mes]['cuota_interes'] = $cuota_interes;
+                $cuota_total = 0 + $cuota_interes;
+                $detalle_plan[$contador_mes]['cuota_total'] = $cuota_total;
+                $detalle_plan[$contador_mes]['saldo_capital'] = $saldo_capital;
+            } else {
+                $detalle_plan[$contador_mes]['periodo_gracia'] = 1;
+                $detalle_plan[$contador_mes]['cuota_mes'] = $cuota_capital_mes;
+                $cuota_interes = round($saldo_capital * $interes_mensual, 2);
+                $detalle_plan[$contador_mes]['cuota_interes'] = $cuota_interes;
+                $cuota_total = $cuota_capital_mes + $cuota_interes;
+                $detalle_plan[$contador_mes]['cuota_total'] = $cuota_total;
+                $saldo_capital = $saldo_capital - $cuota_capital_mes;
+                if ($saldo_capital >= 0) {
+                    $detalle_plan[$contador_mes]['saldo_capital'] = $saldo_capital;
+                } else {
+                    $detalle_plan[$contador_mes]['saldo_capital'] = 0;
                 }
 
             }
-            $contador_mes=$contador_mes + 1;
+            $contador_mes = $contador_mes + 1;
 
         }
         return $detalle_plan;

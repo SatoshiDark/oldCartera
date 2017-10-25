@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('contentheader_title')
-	Tipo de Prestamos
+	Modalidades de Préstamo
 @endsection
 @section('htmlheader_title')
 	Editar
@@ -13,7 +13,7 @@
         <div class="col-xs-12">
           <div class="box box-default">
             <div class="box-header with-border">
-              <h3 class="box-title">Editar Tipo de Prestamo</h3>
+              <h3 class="box-title">Editar Modalidad de Préstamo</h3>
               <div class="box-tools pull-right">
                             <a href="{{url('tipoprestamo')}}" class="btn btn-sm btn-info btn-flat pull-left"><i class='fa fa-th-large'></i> Lista</a>
 

@@ -46,6 +46,7 @@ class CreateCreditosTable extends Migration
             $table->integer('tipo_credito_id')->unsigned();
             $table->string('nro_solicitud');
             $table->string('nombre_proyecto');
+            $table->string('nombre_proyectista');
             $table->date('fecha_solicitud');
             $table->double('importe_solicitado');
             $table->double('importe_propio');
@@ -56,13 +57,16 @@ class CreateCreditosTable extends Migration
             $table->unsignedSmallInteger('estado');
 //            $table->date('fecha_aprobacion');
 //            $table->double('monto_aprobado');
+            $table->string('objeto_prestamo'); // Mineria - instalacion Planta - metalurgica
+            $table->string('licencia_ambiental');
+            $table->string('federacion_afiliacion');
             $table->text('adjunto');
             $table->text('requisitos');
 
             $table->timestamps();
         });
 
-        Schema::table('solicitudes', function($table) {
+        Schema::table('solicitudes', function ($table) {
             $table->foreign('cooperativa_id')->references('id')->on('cooperativas');
 //            $table->foreign('cooperativa_id')->references('id')->on('cooperativas')->onDelete('cascade')->onUpdate('cascade');
         });
@@ -81,7 +85,7 @@ class CreateCreditosTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('garantias_solicitudes', function($table) {
+        Schema::table('garantias_solicitudes', function ($table) {
             $table->foreign('solicitud_id')->references('id')->on('solicitudes');
         });
 
@@ -98,7 +102,7 @@ class CreateCreditosTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('solicitudes_resolucion', function($table) {
+        Schema::table('solicitudes_resolucion', function ($table) {
             $table->foreign('solicitud_id')->references('id')->on('solicitudes');
         });
 
@@ -125,7 +129,7 @@ class CreateCreditosTable extends Migration
             $table->date('ultima_amortizacion');
             $table->timestamps();
         });
-        Schema::table('creditos', function($table) {
+        Schema::table('creditos', function ($table) {
             $table->foreign('solicitud_id')->references('id')->on('solicitudes_resolucion');
         });
 
@@ -145,11 +149,12 @@ class CreateCreditosTable extends Migration
 
             $table->timestamps();
         });
-        Schema::table('plan_creditos', function($table) {
+        Schema::table('plan_creditos', function ($table) {
             $table->foreign('credito_id')->references('id')->on('creditos');
         });
 
         // Amortizaciones
+        // TODO Remove Amortizaciones
         Schema::create('amortizaciones', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('credito_id')->unsigned();
@@ -169,7 +174,7 @@ class CreateCreditosTable extends Migration
 
             $table->timestamps();
         });
-        Schema::table('amortizaciones', function($table) {
+        Schema::table('amortizaciones', function ($table) {
             $table->foreign('credito_id')->references('id')->on('creditos');
             $table->foreign('plan_credito_id')->references('id')->on('plan_creditos');
         });
@@ -193,6 +198,7 @@ class CreateCreditosTable extends Migration
 //        });
 
         // Desembolso
+        // Todo Remove Desembolsos
         Schema::create('desembolsos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('credito_id')->unsigned();
@@ -208,7 +214,7 @@ class CreateCreditosTable extends Migration
 
             $table->timestamps();
         });
-        Schema::table('desembolsos', function($table) {
+        Schema::table('desembolsos', function ($table) {
             $table->foreign('credito_id')->references('id')->on('creditos');
         });
 
@@ -229,6 +235,30 @@ class CreateCreditosTable extends Migration
 //            $table->foreign('credito_id')->references('id')->on('creditos');
 //        });
 
+        Schema::create('movimiento_creditos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('credito_id')->unsigned();
+            $table->integer('plan_credito_id')->nullable()->unsigned(); // A cada plan de creditos le corresponde uno o mas, Cuotas a amortizar segun contrato
+            $table->unsignedSmallInteger('tipo'); // 0: desembolso, 1: amortizacion, 2: otros
+            $table->date('fecha_pago');
+            $table->text('mov_documento');
+            $table->double('mora');
+            $table->double('interes');
+            $table->double('capital_pagado');
+            $table->double('monto_cancelado');
+            $table->double('saldo_capital');
+            $table->double('saldo_capital_plan_pagos');
+            $table->double('saldo_total_cartera');
+            $table->double('dif_capital_mora');
+            $table->double('dif_capital_interes');
+            $table->text('descripcion');
+
+            $table->timestamps();
+        });
+        Schema::table('movimiento_creditos', function($table) {
+            $table->foreign('credito_id')->references('id')->on('creditos');
+            $table->foreign('plan_credito_id')->references('id')->on('plan_creditos');
+        });
     }
 
     /**
@@ -251,6 +281,7 @@ class CreateCreditosTable extends Migration
 //        Schema::drop('control_credito');
         Schema::drop('desembolsos');
 //        Schema::drop('equipo_infraestructura');
+        Schema::drop('movimiento_creditos');
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }

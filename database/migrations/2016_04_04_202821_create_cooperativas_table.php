@@ -16,6 +16,7 @@ class CreateCooperativasTable extends Migration
         Schema::create('cooperativas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre')->unique();
+            $table->string('personeria_juridica');
             $table->string('codigo');
             $table->string('nro_registro')->unique();
             $table->string('derecho_consesionario');
@@ -35,6 +36,8 @@ class CreateCooperativasTable extends Migration
             $table->string('casilla_postal');
             $table->string('email');
             $table->string('web');
+            $table->string('coordinadas_utm');
+            $table->string('produccion_anual');
             $table->integer('mineral_id')->unsigned();
 
             $table->decimal('latitude',20,10);

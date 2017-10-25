@@ -24,7 +24,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('amortizacion', 'AmortizacionController');
     Route::resource('reporte', 'ReporteController');
     Route::post('aprobarsolicitud', 'SolicitudController@aprobarsolicitud');
-
+    Route::get('/test', 'CreditoController@testPlanCredito');
 });
 
 Route::get('API/{solicitud}', function (App\Solicitud $solicitud){

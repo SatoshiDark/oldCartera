@@ -20,4 +20,8 @@ class PlanCredito extends Model
     {
         return $this->hasMany('App\Amortizacion');
     }
+    public function movimientos()
+    {
+        return $this->hasMany('App\MovimientoCredito');
+    }
 }

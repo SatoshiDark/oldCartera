@@ -26,8 +26,13 @@
 
 
         <div class="form-group">
-            {!! Form::label('nombre', 'Nombre:', ['class' => 'control-label']) !!}
+            {!! Form::label('nombre', 'NOMBRE O RAZÓN SOCIAL DE LA COOPERATIVA SOLICITANTE:', ['class' => 'control-label']) !!}
             {!! Form::text('nombre', null, ['class' => 'form-control']) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('personeria_juridica', 'Personeria Juridica:', ['class' => 'control-label']) !!}
+            {!! Form::text('personeria_juridica', null, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
@@ -73,6 +78,10 @@
             {!! Form::label('direccion', 'Direccion:', ['class' => 'control-label']) !!}
             {!! Form::text('direccion', null, ['class' => 'form-control']) !!}
         </div>
+        <div class="form-group">
+            {!! Form::label('coordinadas_utm', 'Coor. UTM:', ['class' => 'control-label']) !!}
+            {!! Form::text('coordinadas_utm', null, ['class' => 'form-control']) !!}
+        </div>
 
         <div class="form-group">
             {!! Form::label('telefono', 'Telefono:', ['class' => 'control-label']) !!}
@@ -89,7 +98,15 @@
             {!! Form::text('web', null, ['class' => 'form-control']) !!}
         </div>
 
+        <div class="form-group">
+            {!! Form::label('mineral_id', 'Mineral de Produccion:', ['class' => 'control-label']) !!}
+            {!! Form::select('mineral_id', $minerales, ['class' => 'form-control']) !!}
+        </div>
 
+        <div class="form-group">
+            {!! Form::label('produccion_anual', 'Produccion Anual:', ['class' => 'control-label']) !!}
+            {!! Form::text('produccion_anual', null, ['class' => 'form-control']) !!}
+        </div>
 
         {!! Form::submit('Actualizar registro', ['class' => 'btn btn-primary']) !!}
 

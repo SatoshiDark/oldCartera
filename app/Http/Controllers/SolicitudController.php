@@ -125,7 +125,7 @@ class SolicitudController extends Controller
 
         $interes_mensual=$interes_anual/12/100;
 
-        $cuota_capital_mes=round($saldo_capital/($plazo-$gracia),2);
+        $cuota_capital_mes=round($saldo_capital/($plazo-$gracia),2); // review division by zero
 
         $contador_mes =0;
         $date = date('d-m-Y', strtotime($fecha_ini));

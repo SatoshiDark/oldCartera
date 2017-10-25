@@ -18,6 +18,11 @@ class Credito extends Model
     {
         return $this->hasMany('App\PlanCredito');
     }
+    public function movimientos()
+    {
+        return $this->hasMany('App\MovimientoCredito');
+    }
+    // TODO REMOVE DEPRECATED
     public function amortizacion()
     {
         return $this->hasMany('App\Amortizacion');

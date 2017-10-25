@@ -40,7 +40,7 @@
                             {!! Form::text('nro_solicitud', null, ['class' => 'form-control']) !!}
                         </div>
                         <div class="form-group">
-                            {!! Form::label('nombre_proyecto', 'Nombre del Proyecto:', ['class' => 'control-label']) !!}
+                            {!! Form::label('nombre_proyecto', 'DENOMINACIÓN DEL PROYECTO:', ['class' => 'control-label']) !!}
                             {!! Form::text('nombre_proyecto', null, ['class' => 'form-control']) !!}
                         </div>
                         <div class="form-group">
