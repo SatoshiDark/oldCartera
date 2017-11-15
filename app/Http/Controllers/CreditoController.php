@@ -272,7 +272,7 @@ class CreditoController extends Controller
         return $testPlan;
     }
 
-    public function createNewPlanCredito($saldo_capital, $plazo, $gracia, $interesAnual, $fecha_ini, $diaPago)
+    public function createNewPlanCredito($saldo_capital, $plazo, $gracia, $interesAnual, $fecha_ini, $diaPago, $i = 1)
     {
         // Generate Interes
         // Mensual: anual/mesesAño/porcentaje
@@ -295,19 +295,19 @@ class CreditoController extends Controller
         $mainPC = [];
         $cuotaCapitalMes = $saldo_capital / ($plazo - $gracia);
         $saldoCapital = $saldo_capital;
-        for($i=1; $i<=$plazo; $i++){
+        for(; $i<=$plazo; $i++){
             $tempNewDate = new DateTime();
             $tempNewDate->setDate($year,$month+$i,$diaPago);
             $mainPC[$i]['fechaInicio'] = $tempOldDate->format('Y-m-d');
             $mainPC[$i]['fechaPago'] = $tempNewDate->format('Y-m-d');
-            $mainPC[$i]['diasDiferencia'] = date_diff($tempOldDate,$tempNewDate, '%d')->days;
+            $tempDateDiff = date_diff($tempOldDate,$tempNewDate, '%d')->days;
             if($i<=$gracia){
                 $mainPC[$i]['capitalAmortizar'] = 0;
             }
             else {
                 $mainPC[$i]['capitalAmortizar'] = round($cuotaCapitalMes,2);
             }
-            $mainPC[$i]['interesSaldos'] = round($saldoCapital*$interesDiario*$mainPC[$i]['diasDiferencia'], 2);
+            $mainPC[$i]['interesSaldos'] = round($saldoCapital*$interesDiario*$tempDateDiff, 2);
             $saldoCapital -= $mainPC[$i]['capitalAmortizar'];
             $mainPC[$i]['cuotaTotalMes'] = round($mainPC[$i]['capitalAmortizar'] + $mainPC[$i]['interesSaldos'], 2);
             $mainPC[$i]['saldoCapital'] = round($saldoCapital, 2);
@@ -315,42 +315,6 @@ class CreditoController extends Controller
             $tempOldDate->setDate($year,$month+$i,$diaPago);
         }
         return $mainPC;
-        $interval = DateInterval::createFromDateString('1 month');
-        $end = new DateTime($fecha_ini);
-        $end->add(new DateInterval('P' . $plazo . 'M'));
-
-        $occurrences = new DatePeriod($start, $interval, $end);
-        $detalle_plan = [];
-        $contador_mes = 0;
-        $cuota_capital_mes = round($saldo_capital / ($plazo - $gracia), 2); // Remove
-        foreach ($occurrences as $occurrence) {
-            $detalle_plan[$contador_mes]['fecha'] = $occurrence->format('Y-m-d');
-            if ($contador_mes < $gracia) {
-                $detalle_plan[$contador_mes]['periodo_gracia'] = 0;
-                $detalle_plan[$contador_mes]['cuota_mes'] = 0;
-                $cuota_interes = round($saldo_capital * $interes_mensual, 2);
-                $detalle_plan[$contador_mes]['cuota_interes'] = $cuota_interes;
-                $cuota_total = 0 + $cuota_interes;
-                $detalle_plan[$contador_mes]['cuota_total'] = $cuota_total;
-                $detalle_plan[$contador_mes]['saldo_capital'] = $saldo_capital;
-            } else {
-                $detalle_plan[$contador_mes]['periodo_gracia'] = 1;
-                $detalle_plan[$contador_mes]['cuota_mes'] = $cuota_capital_mes;
-                $cuota_interes = round($saldo_capital * $interes_mensual, 2);
-                $detalle_plan[$contador_mes]['cuota_interes'] = $cuota_interes;
-                $cuota_total = $cuota_capital_mes + $cuota_interes;
-                $detalle_plan[$contador_mes]['cuota_total'] = $cuota_total;
-                $saldo_capital = $saldo_capital - $cuota_capital_mes;
-                if ($saldo_capital >= 0) {
-                    $detalle_plan[$contador_mes]['saldo_capital'] = $saldo_capital;
-                } else {
-                    $detalle_plan[$contador_mes]['saldo_capital'] = 0;
-                }
-
-            }
-            $contador_mes++;
-        }
-        return $detalle_plan;
     }
 
     public function createPlanCredito($saldo_capital, $plazo, $gracia, $interes_anual, $fecha_ini)

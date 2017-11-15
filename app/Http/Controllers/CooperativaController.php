@@ -97,7 +97,8 @@ class CooperativaController extends Controller
     {
         //
         $cooperativa = Cooperativa::findOrFail($id);
-        return view('cooperativa.edit')->withCooperativa($cooperativa);
+        $minerales = TipoMineral::orderBy('created_at', 'asc')->get()->lists('nombre', 'id');
+        return view('cooperativa.edit',['minerales' => $minerales])->withCooperativa($cooperativa);
     }
 
     /**
